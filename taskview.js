@@ -25,34 +25,67 @@
 
 
 var TaskTemplate = Handlebars.compile(
-    "{{ name }} publius"
+    "<p>{{ name }} is complete? {{ complete }}</p><a href='#' class='complete'>Complete</a>"
 );
 
-var TaskView = Backbone.View.extend({
+var EventTemplate = Handlebars.compile(
+    "<h1>{{ name }} EVENT</h1>"
+);
+
+var EventView = Backbone.View.extend({
     tagName: 'li',
-    className: 'task',
+    className: 'event',
     el: 'body',
-    template: TaskTemplate,
+    template: EventTemplate,
     initialize: function(){
-        this.model = new Task;
+        this.model = new Event();
         this.render();
-        alert("initialized")
     },
     render: function(){
         this.$el.html(this.template(this))
         return this;
     },
-    name: function() { return this.model.taskDesc; }
-    // events: {
-    //     "click input[type=button]": "showDescription"  
-    // },
-    // doMilestone: function( event ){
-    //     // Button clicked, you can access the element that was clicked with event.currentTarget
-    //     alert( "Milestone for " + $("#milestone_input").val() );
-    // },
-    // Task.on("change", this.render)
+    name: function() { return this.model.get('eventName');}
+})
+
+var TaskView = Backbone.View.extend({
+    tagName: 'p',
+    className: 'task',
+    el: 'body',
+    template: TaskTemplate,
+    initialize: function(){
+        this.model = new Task();
+        this.render();
+        alert(this.model.get('taskDesc'))
+    },
+    events: {
+        'click .complete': 'completeTask'
+    },
+    completeTask: function() {
+        this.model.set('taskComp',true);
+        this.render();
+        alert(this.name() + ' : ' + this.complete());
+    },
+    render: function(){
+        this.$el.html(this.template(this))
+        return this;
+    },
+    
+    name: function() { return this.model.get('taskDesc'); },
+    complete: function() { if (this.model.get('taskComp')) return 'true'; else return 'false';},
 });
 
-window.sampletask = new TaskView({el: $("container")});
+window.selClass = new Class();
+window.selEvent = new Event();
+
+var numEvents = 3;
+var nameEvent = "EVENT NAME IN GCAL";
+var descEvent = "EVENT DESC IN GCAL";
+var dateEvent = "EVENT NAME IN GCAL";
+var compPerc = 0.8;
+var compEvent = false;
+
+window.sampletask = new TaskView({el: $("#tasks")});
+
 
 
