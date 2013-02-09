@@ -1,4 +1,6 @@
-var clientId = '823704617519.apps.googleusercontent.com';
+
+
+	var clientId = '823704617519.apps.googleusercontent.com';
 		var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
 		var scopes = 'https://www.googleapis.com/auth/calendar';
 		var calid = 'g42kio0ms52em9nt39sjoulh7s@group.calendar.google.com';
@@ -25,7 +27,7 @@ var clientId = '823704617519.apps.googleusercontent.com';
         var authorizeButton = document.getElementById('authorize-button');
         if (authResult && !authResult.error) {
           authorizeButton.style.visibility = 'hidden';
-          makeApiCall();
+          makeApiCall('sssjtb43u55ek0uidvh9u16f20');
           var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
     	  setTimeout(checkAuth, authTimeout);
         } else {
@@ -40,7 +42,7 @@ var clientId = '823704617519.apps.googleusercontent.com';
       }
 
       // Load the API and make an API call.  Display the results on the screen.
-      function makeApiCall() {
+      function makeApiCall(uid) {
   		gapi.client.load('calendar', 'v3', function() {
     	var request = gapi.client.calendar.events.list({ 'calendarId': calid, 'orderBy': 'startTime', 'singleEvents': true });
 
@@ -54,10 +56,11 @@ var clientId = '823704617519.apps.googleusercontent.com';
 	        console.log(eid[i]);
 	        var parsedDate = new Date(resp.items[i].end.date);
 	        edate[i]=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
-	      	$('#list_events').append("<a><li><h6>"+edate[i]+"</h6><span class='tooltip'>"+evar[i]+"</span></li></a>");
+	      	$('#list_events').append("<li><h6>"+edate[i]+"</h6><span class='tooltip'><a href='#' class='eventlinks' id='"+eid[i]+"'>"+evar[i]+"</a></span></li>");
 	      }
 	    });
-	    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': 'sssjtb43u55ek0uidvh9u16f20'});
+	    listenLinks();
+	    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
 		requestDesc.execute(function(resp) {window.description=resp.description;console.log(description);printInfo();});
 	  })};
 
@@ -91,7 +94,13 @@ var clientId = '823704617519.apps.googleusercontent.com';
 			{
 				$('#list_tasks').append("<div class='miletask'><div class='check'><input type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
 			}
-  	}
+  	};
+
+  	function listenLinks(){
+  		$('.eventlinks').click(function(){
+  		alert("NO");});
+  	};
+
 
 
 
