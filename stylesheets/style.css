@@ -16,6 +16,10 @@
 	border-right: solid 10px #dfdfdf;
 }
 
+#leftbar span {
+	display: none;
+}
+
 #rightbar {
 	background-color: #fff;
 	float: right;
@@ -35,6 +39,7 @@ body {
 
 h5 {
 	text-transform: uppercase;
+	font-size: 1.5em;
 	color: #adacad;
 	font-family: 'proxima_nova_ltbold', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
@@ -49,6 +54,10 @@ h5 {
 	font-size: 5.5em;
 	font-family: 'proxima_nova_ltbold', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	margin-top: -10px;
+}
+
+.miledesc {
+	font-size: 1.5em;
 }
 
 .content {
