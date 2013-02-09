@@ -53,24 +53,27 @@ var clientId = '823704617519.apps.googleusercontent.com';
 	      }
 	    });
 	    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': 'sssjtb43u55ek0uidvh9u16f20'});
-		requestDesc.execute(description = function(resp) {return resp.description;});
+		requestDesc.execute(function(resp) {window.description=resp.description;console.log(description);printInfo();});
 	  })};
 
-	  var parsedWords=new Array;
-	  var curWord="";
-	  var i = 0;
-	  while (i<description.length)
-	  {
-	  	if (description[i]=='%'&&description[i+1]=='t'&&description[i+2]=='_')
-	  	{	parsedWords.push(curWord);
-	  		curWord="";
-	  		i=i+2;
-	  		continue;}
-	  	else 
-	  		curword=curword+description[i];
-	  	i++;
-	  }
-	  console.log(parsedWords);
+  	function printInfo() {
+  		var parsedWords=new Array;
+		  var curWord="";
+		  var i = 0;
+		  while (i<window.description.length)
+		  {
+		  	if (window.description[i]=='&'&&window.description[i+1]=='t'&&window.description[i+2]=='_')
+		  	{	parsedWords.push(curWord);
+		  		curWord="";
+		  		i=i+2;
+		  		continue;}
+		  	else 
+		  		curWord=curWord+window.description.charAt(i);
+		  	i++;
+		  }
+		  console.log(parsedWords[1]);
+  	}
+
 
 
 
