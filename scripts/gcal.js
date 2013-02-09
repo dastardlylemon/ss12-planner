@@ -57,21 +57,35 @@ var clientId = '823704617519.apps.googleusercontent.com';
 	  })};
 
   	function printInfo() {
-  		var parsedWords=new Array;
+  		window.parsedWords=new Array;
 		  var curWord="";
 		  var i = 0;
 		  while (i<window.description.length)
 		  {
+		  	if (i==window.description.length-1)
+		  	{
+		  		curWord=curWord+window.description.charAt(i);
+		  		parsedWords.push(curWord);
+		  		i++;
+		  		continue;
+		  	}
 		  	if (window.description[i]=='&'&&window.description[i+1]=='t'&&window.description[i+2]=='_')
-		  	{	parsedWords.push(curWord);
+		  	{	
+		  		parsedWords.push(curWord);
 		  		curWord="";
-		  		i=i+2;
-		  		continue;}
+		  		i=i+3;
+		  		continue;
+		  	}
 		  	else 
 		  		curWord=curWord+window.description.charAt(i);
 		  	i++;
 		  }
 		  console.log(parsedWords[1]);
+		  console.log(parsedWords[2]);
+		  for(i=1;i<window.parsedWords.length;i++)
+			{
+				$('#list_tasks').append("<div class='miletask'><div class='check'><input type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
+			}
   	}
 
 
