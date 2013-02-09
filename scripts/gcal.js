@@ -50,6 +50,7 @@ var clientId = '823704617519.apps.googleusercontent.com';
 	        console.log(evar[i]);
 	        eid[i] = resp.items[i].id;
 	        console.log(eid[i]);
+	      	$('#list_events').append("<a><li><h6>"+resp.items[i].end.date+"</h6><span>Milestone title here</span></li></a>");
 	      }
 	    });
 	    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': 'sssjtb43u55ek0uidvh9u16f20'});
