@@ -1,14 +1,14 @@
-var Class = Backbone.collection.extend({
-	model: Milestone,
+var Class = Backbone.Collection.extend({
+	model: Event,
 	className: 'Default Class Name'
 })
 
 //Milestones will be Events in gCal that contain Tasks
-var Event = Backbone.collection.extend({
+var Event = Backbone.Collection.extend({
 	model: Task,
 	eventName: 'Default Event Name',
 	eventDesc: 'Default Milestone Description',
-	eventDate: 'Expected Completion Date'm,
+	eventDate: 'Expected Completion Date',
 	eventPerc: 0,
 	eventComp: false
 })
@@ -16,16 +16,16 @@ var Event = Backbone.collection.extend({
 //Tasks will be parsed from the description in the event
 var Task = Backbone.Model.extend({
 	//String after %t
-	taskDesc: 'Default Task Description'
+	taskDesc: 'Default Task Description',
 	//Task completed boolean
-	taskComp: false,
+	taskComp: false
 })
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var selClass = new Class({goalName: 'THE NAME OF THE CLASS'})
+/**var selClass = new Class({goalName: 'THE NAME OF THE CLASS'})
 
-for (int i=0;i<"NUMBER OF GCAL EVENTS";i++)
+/**for (int i=0;i<"NUMBER OF GCAL EVENTS";i++)
 {
 	selClass.add({
 		eventName: "EVENT NAME IN GCAL",
@@ -36,10 +36,8 @@ for (int i=0;i<"NUMBER OF GCAL EVENTS";i++)
 			eventComp: true;
 		else
 			eventComp: false;
-	})
-
-
-}
+	}
+)}**/
 
 
 
