@@ -1,0 +1,81 @@
+<!--
+  Copyright (c) 2011 Google Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License"); you may not
+  use this file except in compliance with the License. You may obtain a copy of
+  the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+  WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+  License for the specific language governing permissions and limitations under
+  the License.
+
+  To run this sample, replace YOUR API KEY with your application's API key.
+  It can be found at https://code.google.com/apis/console/?api=plus under API Access.
+  Activate the Google+ service at https://code.google.com/apis/console/ under Services
+-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8' />
+  </head>
+  <body>
+    <!--Add a button for the user to click to initiate auth sequence -->
+    <button id="authorize-button" style="visibility: hidden">Authorize</button>
+    <div id="content"></div>
+    <script type="text/javascript">
+     	var clientId = '823704617519.apps.googleusercontent.com';
+		var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
+		var scopes = 'https://www.googleapis.com/auth/calendar';
+
+      // Use a button to handle authentication the first time.
+      function handleClientLoad() {
+        gapi.client.setApiKey(apiKey);
+        window.setTimeout(checkAuth,1);
+      }
+
+      function checkAuth() {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+      }
+
+
+      function handleAuthResult(authResult) {
+        var authorizeButton = document.getElementById('authorize-button');
+        if (authResult && !authResult.error) {
+          authorizeButton.style.visibility = 'hidden';
+          makeApiCall();
+          var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
+    	  setTimeout(checkAuth, authTimeout);
+        } else {
+          authorizeButton.style.visibility = '';
+          authorizeButton.onclick = handleAuthClick;
+        }
+      }
+
+      function handleAuthClick(event) {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+        return false;
+      }
+
+      // Load the API and make an API call.  Display the results on the screen.
+      function makeApiCall() {
+  		gapi.client.load('calendar', 'v3', function() {
+    	var request = gapi.client.calendar.calendarList.list();
+
+    request.execute(function(resp) {
+      for (var i = 0; i < resp.items.length; i++) {
+        var li = document.createElement('li');
+        li.appendChild(document.createTextNode(resp.items[i].description));
+        document.getElementById('content').appendChild(li);
+      }
+    });
+  });
+}
+    </script>
+    <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+    <p>Grabs all your calendars.</p>
+  </body>
+</html>
