@@ -6,6 +6,8 @@ var clientId = '823704617519.apps.googleusercontent.com';
 
     var eid = new Array();
 
+    var edate = new Array();
+
 		
 		// due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
 
@@ -40,7 +42,7 @@ var clientId = '823704617519.apps.googleusercontent.com';
       // Load the API and make an API call.  Display the results on the screen.
       function makeApiCall() {
   		gapi.client.load('calendar', 'v3', function() {
-    	var request = gapi.client.calendar.events.list({ 'calendarId': calid });
+    	var request = gapi.client.calendar.events.list({ 'calendarId': calid, 'orderBy': 'startTime', 'singleEvents': true });
 
 	    request.execute(function(resp) {
 	      for (var i = 0; i < resp.items.length; i++) {
@@ -50,7 +52,9 @@ var clientId = '823704617519.apps.googleusercontent.com';
 	        console.log(evar[i]);
 	        eid[i] = resp.items[i].id;
 	        console.log(eid[i]);
-	      	$('#list_events').append("<a><li><h6>"+resp.items[i].end.date+"</h6><span>Milestone title here</span></li></a>");
+	        var parsedDate = new Date(resp.items[i].end.date);
+	        edate[i]=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
+	      	$('#list_events').append("<a><li><h6>"+edate[i]+"</h6><span class='tooltip'>"+evar[i]+"</span></li></a>");
 	      }
 	    });
 	    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': 'sssjtb43u55ek0uidvh9u16f20'});
