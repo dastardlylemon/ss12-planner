@@ -68,10 +68,11 @@
 			}
   	};
 
-  	$(document).on('click', '.eventlinks', function(){ 
-    	alert('hello world');
-    	var pathname = window.location.pathname;
-    	alert(pathname);
+  	$(document).on('click', '.eventlinks', function(event){ 
+  		var uid = event.target.href;
+    	alert('Finish your current task first!');
+    	//var pathname = window.location.pathname;
+    	console.log(uid);
 	}); 
 
 
