@@ -56,10 +56,9 @@
 	        console.log(eid[i]);
 	        var parsedDate = new Date(resp.items[i].end.date);
 	        edate[i]=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
-	      	$('#list_events').append("<li><h6>"+edate[i]+"</h6><span class='tooltip'><a href='#' class='eventlinks' id='"+eid[i]+"'>"+evar[i]+"</a></span></li>");
+	      	$('#list_events').append("<li><h6>"+edate[i]+"</h6><span class='tooltip'><a href='#"+eid[i]+"' class='eventlinks' id='"+eid[i]+"'>"+evar[i]+"</a></span></li>");
 	      }
 	    });
-	    listenLinks();
 	    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
 		requestDesc.execute(function(resp) {window.description=resp.description;console.log(description);printInfo();});
 	  })};
@@ -96,10 +95,11 @@
 			}
   	};
 
-  	function listenLinks(){
-  		$('.eventlinks').click(function(){
-  		alert("NO");});
-  	};
+  	$(document).on('click', '.eventlinks', function(){ 
+    	alert('hello world');
+    	var pathname = window.location.pathname;
+    	alert(pathname);
+	}); 
 
 
 
