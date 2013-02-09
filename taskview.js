@@ -31,16 +31,23 @@ var EventTemplate = Handlebars.compile(
 );
 
 var EventView = Backbone.View.extend({
-    tagName: 'p',
+    tagName: 'ul',
     className: 'event',
-    el: 'body',
+    el: $("#events"),
     template: EventTemplate,
     initialize: function(){
-        this.model = new Event();
+        //this.listenTo(Tasks, 'add', this.addOne);
+        //this.listenTo(Tasks, 'all', this.render);
+        //this.model = new Event();
         this.render();
     },
+    addTask: function(){
+        var view = new TaskView({model: Task});
+        //this.$("#tasks").append(view.render().el);
+    },
     render: function(){
-        this.$el.html(this.template(this))
+        this.$el.html(this.template(this));
+        console.log('RENDERING EVENT');
         return this;
     },
     name: function() { return 'NAME OF EVENT ';}
@@ -51,14 +58,15 @@ var TaskTemplate = Handlebars.compile(
 );
 
 var TaskView = Backbone.View.extend({
-    tagName: 'p',
+    tagName: 'li',
+    
     className: 'task',
-    el: 'body',
     template: TaskTemplate,
     initialize: function(){
-        this.model = new Task();
+        //this.model = new Task();
         this.render();
-        alert(this.model.get('taskDesc'))
+        //alert(this.model.get('taskDesc'))
+        //this.listenTo(this.model, 'change', this.render);
     },
     events: {
         'click .complete': 'completeTask'
@@ -73,12 +81,14 @@ var TaskView = Backbone.View.extend({
         return this;
     },
     
-    name: function() { return this.model.get('taskDesc'); },
-    complete: function() { if (this.model.get('taskComp')) return 'true'; else return 'false';},
+    //name: function() { return this.model.get('taskDesc'); },
+    //complete: function() { if (this.model.get('taskComp')) return 'true'; else return 'false';},
 });
 
-window.selClass = new Class();
-window.selEvent = new EventView({el: $("#events")});
+
+window.selEvent = new EventView();
+selEvent.on("change",alert('CHANGE'));
+selEvent.addTask();
 
 var numEvents = 3;
 var nameEvent = "EVENT NAME IN GCAL";
@@ -87,7 +97,6 @@ var dateEvent = "EVENT NAME IN GCAL";
 var compPerc = 0.8;
 var compEvent = false;
 
-window.sampletask = new TaskView({el: $("#tasks")});
 
 
 

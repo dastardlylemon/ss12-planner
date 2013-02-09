@@ -24,7 +24,8 @@
   <script src="javascripts/modernizr.foundation.js"></script>
 </head>
 <body>
-    <div id="rightbar"></div>
+  <button id="authorize-button" style="visibility: hidden">Authorize</button> <br>
+  <div id="rightbar"></div>
   <div id="leftbar"></div>
   <div id="header"></div>
 
@@ -34,58 +35,8 @@
       <div class="milename">Write a Thesis Statement</div>
       <div class="miledesc">Come up with a descriptive sentence that summarizes the main ideas of your paper</div>
       <h5>Current Tasks:</h5>
-      <div class="row">
-      <div class="miletask five columns">
-        <div class="check">
-        <input type="checkbox" />
-        <label>Done!</label>
+      <div class="row" id="list_tasks">
       </div>
-        <div class="taskdata">
-        <div class="tasktitle">Do research on the topic</div>
-        <div class="taskdesc">Look up historical sources. Who are you writing about? Why is he important?</div>
-      </div>
-      </div>
-      <div class="miletask five columns">
-        <div class="check">
-        <input type="checkbox" />
-        <label>Done!</label>
-      </div>
-        <div class="taskdata">
-        <div class="tasktitle">Do research on the topic</div>
-        <div class="taskdesc">Look up historical sources. Who are you writing about? Why is he important?</div>
-      </div>
-      </div>
-      <div class="miletask five columns">
-        <div class="check">
-        <input type="checkbox" />
-        <label>Done!</label>
-      </div>
-        <div class="taskdata">
-        <div class="tasktitle">Do research on the topic</div>
-        <div class="taskdesc">Look up historical sources. Who are you writing about? Why is he important?</div>
-      </div>
-      </div>
-            <div class="miletask five columns">
-              <div class="check">
-        <input type="checkbox" />
-        <label>Done!</label>
-      </div>
-        <div class="taskdata">
-        <div class="tasktitle">Do research on the topic</div>
-        <div class="taskdesc">Look up historical sources. Who are you writing about? Why is he important?</div>
-      </div>
-      </div>
-            <div class="miletask five columns">
-              <div class="check">
-        <input type="checkbox" />
-        <label>Done!</label>
-      </div>
-        <div class="taskdata">
-        <div class="tasktitle">Do research on the topic</div>
-        <div class="taskdesc">Look up historical sources. Who are you writing about? Why is he important?</div>
-      </div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -109,11 +60,13 @@
   -->
   
   <!-- Included JS Files (Compressed) -->
-  <script src="javascripts/jquery.js"></script>
+  <script src="scripts/jquery.js"></script>
   <script src="javascripts/foundation.min.js"></script>
   
   <!-- Initialize JS Plugins -->
   <script src="javascripts/app.js"></script>
+  <script src="scripts/script.js"></script>
+  <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 
   
     <script>

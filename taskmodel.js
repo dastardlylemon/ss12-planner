@@ -13,6 +13,8 @@ var Event = Backbone.Collection.extend({
 	eventComp: false
 })
 
+var Tasks = new Event;
+
 //Tasks will be parsed from the description in the event
 var Task = Backbone.Model.extend({
 	//String after %t
