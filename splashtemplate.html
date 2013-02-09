@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if IE 8]>    
+<html class="no-js lt-ie9" lang="en">
+   <![endif]-->
+   <!--[if gt IE 8]><!--> 
+   <html class="no-js" lang="en">
+      <!--<![endif]-->
+      <head>
+         <meta charset="utf-8" />
+         <!-- Set the viewport width to device width for mobile -->
+         <meta name="viewport" content="width=device-width" />
+         <title>Habitask</title>
+         <!-- Included CSS Files (Uncompressed) -->
+         <!--
+            <link rel="stylesheet" href="stylesheets/foundation.css">
+            -->
+         <!-- Included CSS Files (Compressed) -->
+         <link rel="stylesheet" href="stylesheets/foundation.min.css" />
+         <link rel="stylesheet" href="stylesheets/app.css" />
+         <link rel="stylesheet" href="stylesheets/style.css" />
+         <script src="javascripts/modernizr.foundation.js"></script>
+      </head>
+      <div class="header"><h5 style="float:right; color: #fff; margin-right: 20px;">Sign in</h5></div>
+      <body class="splash">
+        <div class="row">
+          <div class="twelve columns">
+            <h1>Welcome to Habitask</h1>
+            <p class="splashdesc">The student/teacher planner built to aid kids with ADHD.</p>
+          </div>
+          <div class="four columns splashbutton"><h5><a href="#signup">Sign up now!</a></h5></div>
+          <div class="four columns splashbutton"><h5><a href="#about">Who we are</a></h5></div>
+          <div class="four columns splashbutton"><h5><a href="#why">Why Habitask?</a></h5></div>
+
+          <aside id="signup" class="modal">
+          <div>
+        <h2>SIGN UP NOW!</h2>
+        <p>Ready to try out Habitask for yourself? Just sign in with your Google account and we can get down to business.</p>
+        <button>I'm a student</button><button>I'm a teacher</button>
+        <a href="#close" title="Close">Close</a>
+        </div>
+        </aside>
+                  <aside id="about" class="modal">
+          <div>
+        <h2>WHO WE ARE</h2>
+        <p>Habitask was built with love by Calvin Chan, James Wu, and Aman Agarwal in Los Angeles, California. This was a project for the 2013 SS12 Hackathon and is the product of 23 hours of caffeine and sadness. Habitask makes heavy use of the Google Calendar API.</p>
+        <a href="#close" title="Close">Close</a>
+        </div>
+        </aside>
+                  <aside id="why" class="modal">
+          <div>
+        <h2>WHY HABITASK?</h2>
+        <p>Students with ADHD often have a more difficult time with the &ldquo;big picture&rdquo; aspect of school projects. Habitask aims to help these students by letting teachers break up projects into smaller Milestones and Tasks, allowing the student to focus on a few immediate deadlines rather than a vague, amorphous due date.</p>
+        <a href="#close" title="Close">Close</a>
+        </div>
+        </aside>
+        </div>
+
+         <!-- Included JS Files (Uncompressed) -->
+         <!--
+            <script src="javascripts/jquery.js"></script><script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script><script src="javascripts/jquery.foundation.forms.js"></script><script src="javascripts/jquery.foundation.reveal.js"></script><script src="javascripts/jquery.foundation.orbit.js"></script><script src="javascripts/jquery.foundation.navigation.js"></script><script src="javascripts/jquery.foundation.buttons.js"></script><script src="javascripts/jquery.foundation.tabs.js"></script><script src="javascripts/jquery.foundation.tooltips.js"></script><script src="javascripts/jquery.foundation.accordion.js"></script><script src="javascripts/jquery.placeholder.js"></script><script src="javascripts/jquery.foundation.alerts.js"></script><script src="javascripts/jquery.foundation.topbar.js"></script><script src="javascripts/jquery.foundation.joyride.js"></script><script src="javascripts/jquery.foundation.clearing.js"></script><script src="javascripts/jquery.foundation.magellan.js"></script>
+            -->
+         <!-- Included JS Files (Compressed) -->
+         <script src="javascripts/jquery.js"></script>
+         <script src="javascripts/foundation.min.js"></script>
+         <!-- Initialize JS Plugins -->
+  <script src="javascripts/app.js"></script>
+  <script src="scripts/gcal.js"></script>
+  <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+         <script>
+            $(window).load(function(){
+              $("#featured").orbit();
+            });
+         </script> 
+      </body>
+   </html>
