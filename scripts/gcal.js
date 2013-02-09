@@ -13,33 +13,6 @@
 		
 		// due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
 
-      // Use a button to handle authentication the first time. 
-      function handleClientLoad() {
-        gapi.client.setApiKey(apiKey);
-        window.setTimeout(checkAuth,1);
-      }
-
-      function checkAuth() {
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
-      }
-
-      function handleAuthResult(authResult) {
-        var authorizeButton = document.getElementById('authorize-button');
-        if (authResult && !authResult.error) {
-          authorizeButton.style.visibility = 'hidden';
-          makeApiCall('sssjtb43u55ek0uidvh9u16f20');
-          var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
-    	  setTimeout(checkAuth, authTimeout);
-        } else {
-          authorizeButton.style.visibility = '';
-          authorizeButton.onclick = handleAuthClick;
-        }
-      }
-
-      function handleAuthClick(event) {
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-        return false;
-      }
 
       // Load the API and make an API call.  Display the results on the screen.
       function makeApiCall(uid) {
