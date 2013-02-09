@@ -24,16 +24,14 @@
 
 
 
-var TaskTemplate = Handlebars.compile(
-    "<p>{{ name }} is complete? {{ complete }}</p><a href='#' class='complete'>Complete</a>"
-);
+
 
 var EventTemplate = Handlebars.compile(
     "<h1>{{ name }} EVENT</h1>"
 );
 
 var EventView = Backbone.View.extend({
-    tagName: 'li',
+    tagName: 'p',
     className: 'event',
     el: 'body',
     template: EventTemplate,
@@ -45,8 +43,12 @@ var EventView = Backbone.View.extend({
         this.$el.html(this.template(this))
         return this;
     },
-    name: function() { return this.model.get('eventName');}
+    name: function() { return 'NAME OF EVENT ';}
 })
+
+var TaskTemplate = Handlebars.compile(
+    "<p>{{ name }} is complete? {{ complete }}</p><a href='#' class='complete'>Complete</a>"
+);
 
 var TaskView = Backbone.View.extend({
     tagName: 'p',
@@ -76,7 +78,7 @@ var TaskView = Backbone.View.extend({
 });
 
 window.selClass = new Class();
-window.selEvent = new Event();
+window.selEvent = new EventView({el: $("#events")});
 
 var numEvents = 3;
 var nameEvent = "EVENT NAME IN GCAL";
