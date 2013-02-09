@@ -64,6 +64,10 @@
         console.log(eid[i]);
       }
     });
+    for (var j = 0; j < eid.length; j++) {
+      var temp = gapi.client.calendar.events.get({ 'calendarId': calid, 'eventId': eid[j] });
+      temp.execute(function(resp) { console.log(resp.description); });
+    }
   });
 }
     </script>
