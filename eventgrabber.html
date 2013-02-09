@@ -15,6 +15,7 @@
 		var scopes = 'https://www.googleapis.com/auth/calendar';
 		var calid = 'g42kio0ms52em9nt39sjoulh7s@group.calendar.google.com';
     var evar = new Array();
+    var eid = new Array();
 
 		
 		// due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
@@ -59,6 +60,8 @@
         var li = document.createElement('li');
         li.appendChild(document.createTextNode(resp.items[i].summary));
         evar[i] = resp.items[i].summary;
+        eid[i] = resp.items[i].id;
+        console.log(eid[i]);
       }
     });
   });
