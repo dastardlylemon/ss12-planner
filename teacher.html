@@ -101,6 +101,7 @@
         var li = document.createElement('li');
         li.appendChild(document.createTextNode(resp.items[i].description));
         document.getElementById('content').appendChild(li);
+        console.log(resp.items[i]);
       }
     });
   });
@@ -127,13 +128,14 @@
 	   <h2>Habitask</h2>
 	 </div>
          <div class="row">
+         <button id="authorize-button">a</button><div id="content">a</div>
             <div class="content eleven columns">
                <h5>Teacher Dashboard: Add an Assignment</h5>
 	      <br><input type="text" id="calname" placeholder="Name your lesson plan"></br>
               <button id="add-calendar" onclick="addcal()">Add Lesson Plan</button>
               <form class="mileadd" action="#" onsubmit="required()">
                   <input type="text" name="mile_name" placeholder="Name the Milestone"><br>
-		  <input type="text" name="mile_desc" placeholder="Describe the Milestoe"><br>
+		  <input type="text" name="mile_desc" placeholder="Describe the Milestone"><br>
 		  <input type="text" name="mile_date" placeholder="Enter the Milestone Due Date (YYYY-MM-DD)"><br>
 
                <h5>Milestone's Tasks:</h5>
@@ -155,9 +157,7 @@
          <!-- Initialize JS Plugins -->
          <script src="javascripts/app.js"></script>
          <script type="text/javascript">
-	     window.onload = function() {
-      	       makeApiCall(uid);
-	     };
+
 	 </script>
      </body>
    </html>
