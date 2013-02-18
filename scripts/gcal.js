@@ -42,15 +42,17 @@
 
 				requestDesc.execute(function(resp) { 
 					var title = resp.summary;
-					var description = resp.description;
+					var description = resp.location;
+					var taskstring = resp.description;
 					console.log(description);
-					printInfo(title,description);
+					printInfo(title,description,taskstring);
 				});
 			});
 		}
 
-	  	function printInfo(lamft,lamfs) {
+	  	function printInfo(lamft,lamfd,lamfs) {
 	  			console.log("LAMFT "+lamft);
+	  			console.log("LAMFD "+lamfd);
 		  		console.log("LAMFS "+lamfs);
 		  		var parsedWords = new Array;
 				var curWord = "";
@@ -79,8 +81,10 @@
 				console.log(parsedWords[1]);
 				console.log(parsedWords[2]);
 				//clears DOM element before insertion
-				$('#list_tasks, #miletitle').empty();
+				$('#list_tasks, #miletitle, #miledesc').empty();
+				//inserts data into DOM element
 				$('#miletitle').html(lamft);
+				$('#miledesc').html(lamfd);
 				for(i=1;i<parsedWords.length;i++)
 					{
 						$('#list_tasks').append("<div class='miletask'><div class='check'><input type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
