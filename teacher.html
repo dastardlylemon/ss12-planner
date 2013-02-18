@@ -4,6 +4,7 @@
    <![endif]-->
    <!--[if gt IE 8]><!--> 
    <html class="no-js" lang="en">
+   <div id="content"></div>
       <!--<![endif]-->
      <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
      <script type="text/javascript">
@@ -15,52 +16,6 @@
       var evval;
       
       // due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
-
-     function addcal() {
-      calval = '%c_' + document.getElementById('calname').value;
-      console.log(calval);
-      gapi.client.load('calendar', 'v3', function() {
-         var request = gapi.client.calendar.calendars.insert( { 'resource': { 'summary': calval }});
-         request.execute(function(resp) { console.log(resp); calid = resp.id; console.log(calid); });
-      })
-     }
-
-     function insertEvent(calendar) {
-      var summary = document.getElementById('mile_name');
-      var description = document.getElementById('mile_desc');
-      var duedate = document.getElementById('mile_date');
-      var t1 = '&t_' + document.getElementById('task_desc1');
-      var t2 = '&t_' + document.getElementById('task_desc2');
-      var t3 = '&t_' + document.getElementById('task_desc3');
-      var t4 = '&t_' + document.getElementById('task_desc4');
-      description += t1 + t2 + t3 + t4;
-      var resource = {
-        "summary": summary,
-   "description": description,
-        "start": {
-          "date": duedate  //if not an all day event, "date" should be "dateTime" with a dateTime value formatted according to RFC 3339
-        },
-        "end": {
-          "date": duedate  //if not an all day event, "date" should be "dateTime" with a dateTime value formatted according to RFC 3339
-        }
-      };
-     gapi.client.load('calendar', 'v3', function() {  
-       var request = gapi.client.calendar.events.insert({
-         'calendarId': calendar,
-    'resource': resource
-       });
-     request.execute(function(resp) {
-       console.log(resp);
-      if (resp.id){
-          alert("Milestone was successfully added to the plan!");
-      }
-      else{
-         alert("An error occurred. Please try again later.")
-      }
-       
-     });
-     });
-   } 
 
       // Use a button to handle authentication the first time. 
       function handleClientLoad() {
@@ -74,6 +29,7 @@
 
 
       function handleAuthResult(authResult) {
+        console.log("okay");
         var authorizeButton = document.getElementById('authorize-button');
         if (authResult && !authResult.error) {
           authorizeButton.style.visibility = 'hidden';
@@ -128,7 +84,7 @@
 	   <h2>Habitask</h2>
 	 </div>
          <div class="row">
-         <button id="authorize-button">a</button><div id="content">a</div>
+         <button id="authorize-button">a</button>
             <div class="content eleven columns">
                <h5>Teacher Dashboard: Add an Assignment</h5>
 	      <br><input type="text" id="calname" placeholder="Name your lesson plan"></br>
