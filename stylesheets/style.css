@@ -13,6 +13,10 @@
     background-color: #dfdfdf; 
 }
 
+a, a:visited, a:hover {
+  color: #fff;
+}
+
 #header {
 	width: 100%;
 	height: 50px;
@@ -122,6 +126,13 @@
 
 .content {
 	margin-top: -25px;
+}
+
+button {
+  width: auto;
+  float: left;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 body {

@@ -20,7 +20,38 @@
          <link rel="stylesheet" href="stylesheets/foundation.min.css" />
          <link rel="stylesheet" href="stylesheets/app.css" />
          <link rel="stylesheet" href="stylesheets/style.css" />
+         <link rel="shortcut icon" href="images/favicon.ico" />
          <script src="javascripts/modernizr.foundation.js"></script>
+         <script type="text/javascript">
+    var clientId = '823704617519.apps.googleusercontent.com';
+    var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
+    var scopes = 'https://www.googleapis.com/auth/calendar';
+
+         function handleClientLoad() {
+        gapi.client.setApiKey(apiKey);
+        window.setTimeout(checkAuth,1);
+      }
+
+      function checkAuth() {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+      }
+
+      function handleAuthResult(authResult) {
+        var authorizeButton = document.getElementById('authorize-button');
+        if (authResult && !authResult.error) {
+          var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
+        setTimeout(checkAuth, authTimeout);
+        } else {
+          authorizeButton.style.visibility = '';
+          authorizeButton.onclick = handleAuthClick;
+        }
+      }
+
+      function handleAuthClick(event) {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+        return false;
+      }
+         </script>
       </head>
       <div class="header"><h5 style="float:right; color: #fff; margin-right: 20px; ">Login</h5></div>
       <body class="splash">
@@ -37,7 +68,7 @@
           <div>
         <h2>LOGIN</h2>
         <p>Ready to try out Habitask for yourself? Just sign in with your Google account and we can get down to business.</p>
-        <a href="student.html"><button>I'm a student</button></a><a href="teacher.html"><button>I'm a teacher</button></a>
+        <a href="student.html"><button id="authorize-button">I'm a student</button></a><a href="teacher.html"><button>I'm a teacher</button></a>
         <a href="#close" title="Close">Close</a>
         </div>
         </aside>
