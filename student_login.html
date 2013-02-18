@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<head>
+	<title>Student Login</title>
+	<style>
+	#authorization{
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		width: 500px;
+		height: 300px;
+		margin-left: -250px;
+		margin-top: -150px;
+		background-color: #f1bf6c;
+	}
+
+	#authorize-button {
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		width: 200px;
+		height: 75px;
+		margin-left: -110px;
+		margin-top: -47px;
+		background-color: #f1bf6c;
+		border-color: #fff;
+		color: #fff;
+		padding: 10px;
+	}
+	</style>
+</head>
+<body>
+<script type="text/javascript">
+         // Use a button to handle authentication the first time. 
+      function handleClientLoad() {
+        gapi.client.setApiKey(apiKey);
+        window.setTimeout(checkAuth,1);
+      }
+
+      function checkAuth() {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+      }
+
+      function handleAuthResult(authResult) {
+        var authorizeButton = document.getElementById('authorize-button');
+        if (authResult && !authResult.error) {
+          makeApiCall('sssjtb43u55ek0uidvh9u16f20');
+          window.location = "students.html"
+        } else {
+          authorizeButton.style.visibility = 'visible';
+          authorizeButton.onclick = handleAuthClick;
+        }
+      }
+
+      function handleAuthClick(event) {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+        return false;
+      }
+</script>
+<div id="authorization">
+	<button id="authorize-button">Authorize</button>
+</div>
+
+</body>
+</html>
