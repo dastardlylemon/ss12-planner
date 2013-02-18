@@ -213,14 +213,14 @@ p.splashdesc {
 }
 
 #miletitle {
-	text-transform: uppercase;;
+	text-transform: uppercase;
 	color: #f1bf6c;
 	font-size: 5.5em;
 	font-family: 'proxima_nova_ltbold', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	margin-top: -10px;
 }
 
-.miledesc {
+#miledesc {
 	font-size: 1.5em;
 }
 
