@@ -132,7 +132,28 @@ button {
   width: auto;
   float: left;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: ;
+  background-color: #fff;
+  border: 3px solid LightGrey;
+  color: LightGrey;
+  text-transform: uppercase;
+  font-size: 15px;
+  border-radius: 50px;
+  position: relative;
+  bottom: 15px;
+  margin: 10px;
+  font-family: 'proxima_nova_ltbold', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+}
+
+button:hover {
+  border: 3px solid #f1bf6c;
+  background-color: #f1bf6c;
+  color: #fff;
+}
+
+#buttons {
+  width: 350px;
+  margin: 0 auto;
 }
 
 body {
@@ -191,7 +212,7 @@ p.splashdesc {
 	color: #fff;
 }
 
-.milename {
+#miletitle {
 	text-transform: uppercase;;
 	color: #f1bf6c;
 	font-size: 5.5em;
