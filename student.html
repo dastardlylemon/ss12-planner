@@ -35,13 +35,13 @@
       }
 
       function handleAuthResult(authResult) {
-        var authorizeButton = document.getElementById('authorize-button');
         if (authResult && !authResult.error) {
-          authorizeButton.style.visibility = 'hidden';
-          makeApiCall('sssjtb43u55ek0uidvh9u16f20');
+          loadTimeline();
+          loadEvent('sssjtb43u55ek0uidvh9u16f20');
           var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
-        setTimeout(checkAuth, authTimeout);
-        } else {
+          setTimeout(checkAuth, authTimeout);
+        } 
+        else {
           authorizeBackground.style.visibility = 'visible';
           authorizeButton.onclick = handleAuthClick;
         }
@@ -71,7 +71,7 @@
          <div class="row">
             <div class="content eleven columns">
                <h5>Today&rsquo;s Milestone:</h5>
-               <div class="milename">Write a Thesis Statement</div>
+               <div class="milename" id="miletitle">Write a Thesis Statement</div>
                <div class="miledesc">Come up with a descriptive sentence that summarizes the main ideas of your paper</div>
                <h5>Current Tasks:</h5>
                <div class="row" id="list_tasks">
