@@ -124,15 +124,18 @@
          <script src="javascripts/modernizr.foundation.js"></script>
       </head>
       <body>
-         <div id="header"></div>
+         <div id="header">
+	   <h2>Habitask</h2>
+	 </div>
          <div class="row">
             <div class="content eleven columns">
-               <br><input type="text" id="calname" value="Name your lesson plan"><button id="add-calendar" onclick="addcal()">Add Lesson Plan</button> <br>
                <h5>Teacher Dashboard: Add an Assignment</h5>
+	      <br><input type="text" id="calname" placeholder="Name your lesson plan"></br>
                <form class="mileadd" action="#" onsubmit="required()">
-                  Milestone Name: <input type="text" name="mile_name"><br>
-		  Milestone Description: <input type="text" name="mile_desc"><br>
-		  Milestone Due Date (YYYY-MM-DD): <input type="text" name="mile_date"><br>
+                  <input type="text" name="mile_name" placeholder="Name the Milestone"><br>
+		  <input type="text" name="mile_desc" placeholder="Describe the Milestoe"><br>
+		  <input type="text" name="mile_date" placeholder="Enter the Milestone Due Date (YYYY-MM-DD)"><br>
+
                <h5>Milestone's Tasks:</h5>
                  Task 1 Description: <input type="text" name="task_desc1"><br>
                  Task 2 Description: <input type="text" name="task_desc2"><br>
@@ -140,6 +143,7 @@
                  Task 4 Description: <input type="text" name="task_desc4"><br>
 		 <button id="add-milestone" onclick="insertEvent()">ADD!</button>
                </form>
+               <button id="add-calendar" onclick="addcal()">Add Lesson Plan</button>
             </div>
          </div>
          <!-- Included JS Files (Uncompressed) -->
