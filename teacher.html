@@ -6,63 +6,7 @@
    <html class="no-js" lang="en">
    <div id="content"></div>
       <!--<![endif]-->
-     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
-     <script type="text/javascript">
-      var clientId = '823704617519.apps.googleusercontent.com';
-      var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
-      var scopes = 'https://www.googleapis.com/auth/calendar';
-      var calval;
-      var calid;
-      var evval;
-      
-      // due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
 
-      // Use a button to handle authentication the first time. 
-      function handleClientLoad() {
-        gapi.client.setApiKey(apiKey);
-        window.setTimeout(checkAuth,1);
-      }
-
-      function checkAuth() {
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
-      }
-
-
-      function handleAuthResult(authResult) {
-        console.log("okay");
-        var authorizeButton = document.getElementById('authorize-button');
-        if (authResult && !authResult.error) {
-          authorizeButton.style.visibility = 'hidden';
-          makeApiCall();
-          var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
-        setTimeout(checkAuth, authTimeout);
-        } else {
-          authorizeButton.style.visibility = '';
-          authorizeButton.onclick = handleAuthClick;
-        }
-      }
-
-      function handleAuthClick(event) {
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-        return false;
-      }
-
-      // Load the API and make an API call.  Display the results on the screen.
-      function makeApiCall() {
-      gapi.client.load('calendar', 'v3', function() {
-      var request = gapi.client.calendar.calendarList.list();
-
-    request.execute(function(resp) {
-      for (var i = 0; i < resp.items.length; i++) {
-        var li = document.createElement('li');
-        li.appendChild(document.createTextNode(resp.items[i].description));
-        document.getElementById('content').appendChild(li);
-        console.log(resp.items[i]);
-      }
-    });
-  });
-}
-     </script>
 
      <head>
          <meta charset="utf-8" />
@@ -84,11 +28,24 @@
 	   <h2>Habitask</h2>
 	 </div>
          <div class="row">
-         <button id="authorize-button">a</button>
+         <button id="authorize-button" style="visibility: hidden">Authorize</button> <br>
+          <script src="scripts/teacher.js"></script>
+          <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+
+
+
+
+
+
+
             <div class="content eleven columns">
-               <h5>Teacher Dashboard: Add an Assignment</h5>
-	      <br><input type="text" id="calname" placeholder="Name your lesson plan"></br>
+	      <br>
+              <div id="noplans" style="visibility: hidden"><h3>It seems that you don&rsquo;t have any lesson plans! Why don&rsquo;t you start off by creating one?</h3></div>
+              <input type="text" id="calname" placeholder="Name your lesson plan"></br>
               <button id="add-calendar" onclick="addcal()">Add Lesson Plan</button>
+
+
+              <div id="oneplan" style="visibility: hidden">
               <form class="mileadd" action="#" onsubmit="required()">
                   <input type="text" name="mile_name" placeholder="Name the Milestone"><br>
 		  <input type="text" name="mile_desc" placeholder="Describe the Milestone"><br>
@@ -101,6 +58,7 @@
                  Task 4 Description: <input type="text" name="task_desc4"><br>
 		 <button id="add-milestone" onclick="insertEvent()">ADD!</button>
                </form>
+             </div>
             </div>
          </div>
          <!-- Included JS Files (Uncompressed) -->
