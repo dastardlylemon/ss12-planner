@@ -8,7 +8,7 @@
 
       // adds a new calendar
       function addcal() {
-      calval = '%c_' + document.getElementById('calname').value;
+      calval = '&c_' + document.getElementById('calname').value;
       console.log(calval);
       gapi.client.load('calendar', 'v3', function() {
         var request = gapi.client.calendar.calendars.insert( { 'resource': { 'summary': calval }});
@@ -28,7 +28,6 @@
 
 
       function handleAuthResult(authResult) {
-        console.log("okay");
         var authorizeButton = document.getElementById('authorize-button');
         if (authResult && !authResult.error) {
           makeApiCall();
@@ -48,16 +47,19 @@
       // Load the API and make an API call.  Display the results on the screen.
       function makeApiCall() {
       gapi.client.load('calendar', 'v3', function() {
-      var request = gapi.client.calendar.calendarList.list();
+      var request = gapi.client.calendar.calendarList.list({ showHidden : true });
 
       // loads all calendars with the appropriate  
       request.execute(function(resp) { 
       for (var i = 0; i < resp.items.length; i++) {
-        if (resp.items[i].description !== undefined) {
-          if (resp.items[i].description.substring(0,3) == "&c_")
-            calnames.push(resp.items[i].description);
+        if (resp.items[i].summary !== undefined) {
+          if (resp.items[i].summary.substring(0,3) == "&c_")
+            calnames.push(resp.items[i].summary);
+
         }
+        console.log(resp.items[i].summary);
       }
+
 
       for (var j = 0; j < calnames.length; j++) 
         console.log(calnames[i]);
