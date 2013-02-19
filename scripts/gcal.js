@@ -36,6 +36,9 @@
 			});
 	  	}
 	  	//Loads an individual event
+	function updateEvent(uid, newDesc) {
+		gapi.client.load('calendar', 'v3', function() {
+			var eventToUpdate
 	  	function loadEvent(uid) {
 	  		gapi.client.load('calendar', 'v3', function() {
 			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
