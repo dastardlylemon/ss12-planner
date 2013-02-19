@@ -21,9 +21,12 @@
 	      gapi.client.load('oauth2', 'v1', function(){
 	        var userinfo = gapi.client.request('oauth2/v1/userinfo?alt=json');
 	        userinfo.execute(function(resp){
-	          window.uemail=(resp.email);
-	          window.uname=(resp.given_name);
-	          $('#header').html('<h5>Welcome '+uname+'! Your email address is '+uemail+'.</h5>');
+	          window.user={
+	          	"email":resp.email,
+	          	"name":resp.given_name,
+	          	"id":resp.id
+	          }
+	          $('#header').html('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
 	    }
@@ -56,20 +59,37 @@
 			});
 	  	}
 
-    function updateEvent(uid, newDesc) {
+    function updateEvent(uid) {
         gapi.client.load('calendar', 'v3', function() {
             var eventToUpdateCall = gapi.client.calendar.events.get(
                 {'calendarId': calid , 'eventId': uid}
             );
 
             eventToUpdateCall.execute(function(resp){
-            	resp.description = newDesc + " " + resp.description;
-            	console.log(resp.description);
-            	var updateStage = gapi.client.calendar.events.update(
-	               {'calendarId': calid, 'eventId': uid, 'resource': resp}
-	            );
 
-            	updateStage.execute();
+				var completeEmail = "&d_" + user.email;
+				if (resp.description.search(completeEmail)==-1)
+            	{
+					resp.description = completeEmail + " " + resp.description;
+	            	var updateStage = gapi.client.calendar.events.update(
+		               {'calendarId': calid, 'eventId': uid, 'resource': resp}
+		            );
+
+	            	updateStage.execute(function(resp) {
+				       console.log(resp);
+					   if (resp.id){
+					   	 alert("Event completed!");
+					   }
+					   else{
+					   	alert("An error occurred. Please try again later.")
+					   }
+				       
+				     });
+	            }
+            	else
+            		alert("Event has already been completed");
+            	//console.log(resp.description);
+
             });
         });
     }; 
