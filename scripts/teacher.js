@@ -2,7 +2,9 @@
       var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
       var scopes = 'https://www.googleapis.com/auth/calendar';
       var calnames = new Array();
+      var calids = new Array();
       var calval;
+      var calid;
       
       // due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
 
@@ -49,12 +51,14 @@
       gapi.client.load('calendar', 'v3', function() {
       var request = gapi.client.calendar.calendarList.list({ showHidden : true });
 
-      // loads all calendars with the appropriate  
+      // loads all calendars with the appropriate name
       request.execute(function(resp) { 
       for (var i = 0; i < resp.items.length; i++) {
         if (resp.items[i].summary !== undefined) {
-          if (resp.items[i].summary.substring(0,3) == "&c_")
+          if (resp.items[i].summary.substring(0,3) == "&c_") {
             calnames.push(resp.items[i].summary);
+            calids.push(resp.items[i].id);
+          }
 
         }
         console.log(resp.items[i].summary);
@@ -63,6 +67,14 @@
 
       for (var j = 0; j < calnames.length; j++) 
         console.log(calnames[i]);
+
+      // grab the first calendar for now, log all milestones to the console (will add to DOM later)
+      request = gapi.client.calendar.events.list({ 'calendarId': calids[0] });
+      request.execute(function(resp) {
+        for (var j = 0; j < resp.items.length; j++) {
+          console.log(resp.items[j].summary);
+        }
+      })
 
       // display the block if there are no calendars already established
       if (calnames && calnames.length <= 0) {
