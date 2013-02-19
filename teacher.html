@@ -4,108 +4,9 @@
    <![endif]-->
    <!--[if gt IE 8]><!--> 
    <html class="no-js" lang="en">
+   <div id="content"></div>
       <!--<![endif]-->
-     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
-     <script type="text/javascript">
-      var clientId = '823704617519.apps.googleusercontent.com';
-      var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
-      var scopes = 'https://www.googleapis.com/auth/calendar';
-      var calval;
-      var calid;
-      var evval;
-      
-      // due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
 
-     function addcal() {
-      calval = '%c_' + document.getElementById('calname').value;
-      console.log(calval);
-      gapi.client.load('calendar', 'v3', function() {
-         var request = gapi.client.calendar.calendars.insert( { 'resource': { 'summary': calval }});
-         request.execute(function(resp) { console.log(resp); calid = resp.id; console.log(calid); });
-      })
-     }
-
-     function insertEvent(calendar) {
-      var summary = document.getElementById('mile_name');
-      var description = document.getElementById('mile_desc');
-      var duedate = document.getElementById('mile_date');
-      var t1 = '&t_' + document.getElementById('task_desc1');
-      var t2 = '&t_' + document.getElementById('task_desc2');
-      var t3 = '&t_' + document.getElementById('task_desc3');
-      var t4 = '&t_' + document.getElementById('task_desc4');
-      description += t1 + t2 + t3 + t4;
-      var resource = {
-        "summary": summary,
-   "description": description,
-        "start": {
-          "date": duedate  //if not an all day event, "date" should be "dateTime" with a dateTime value formatted according to RFC 3339
-        },
-        "end": {
-          "date": duedate  //if not an all day event, "date" should be "dateTime" with a dateTime value formatted according to RFC 3339
-        }
-      };
-     gapi.client.load('calendar', 'v3', function() {  
-       var request = gapi.client.calendar.events.insert({
-         'calendarId': calendar,
-    'resource': resource
-       });
-     request.execute(function(resp) {
-       console.log(resp);
-      if (resp.id){
-          alert("Milestone was successfully added to the plan!");
-      }
-      else{
-         alert("An error occurred. Please try again later.")
-      }
-       
-     });
-     });
-   } 
-
-      // Use a button to handle authentication the first time. 
-      function handleClientLoad() {
-        gapi.client.setApiKey(apiKey);
-        window.setTimeout(checkAuth,1);
-      }
-
-      function checkAuth() {
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
-      }
-
-
-      function handleAuthResult(authResult) {
-        var authorizeButton = document.getElementById('authorize-button');
-        if (authResult && !authResult.error) {
-          authorizeButton.style.visibility = 'hidden';
-          makeApiCall();
-          var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
-        setTimeout(checkAuth, authTimeout);
-        } else {
-          authorizeButton.style.visibility = '';
-          authorizeButton.onclick = handleAuthClick;
-        }
-      }
-
-      function handleAuthClick(event) {
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-        return false;
-      }
-
-      // Load the API and make an API call.  Display the results on the screen.
-      function makeApiCall() {
-      gapi.client.load('calendar', 'v3', function() {
-      var request = gapi.client.calendar.calendarList.list();
-
-    request.execute(function(resp) {
-      for (var i = 0; i < resp.items.length; i++) {
-        var li = document.createElement('li');
-        li.appendChild(document.createTextNode(resp.items[i].description));
-        document.getElementById('content').appendChild(li);
-      }
-    });
-  });
-}
-     </script>
 
      <head>
          <meta charset="utf-8" />
@@ -127,13 +28,27 @@
 	   <h2>Habitask</h2>
 	 </div>
          <div class="row">
+         <button id="authorize-button" style="visibility: hidden">Authorize</button> <br>
+          <script src="scripts/teacher.js"></script>
+          <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+
+
+
+
+
+
+
             <div class="content eleven columns">
-               <h5>Teacher Dashboard: Add an Assignment</h5>
-	      <br><input type="text" id="calname" placeholder="Name your lesson plan"></br>
+	      <br>
+              <div id="noplans" style="visibility: hidden"><h3>It seems that you don&rsquo;t have any lesson plans! Why don&rsquo;t you start off by creating one?</h3></div>
+              <input type="text" id="calname" placeholder="Name your lesson plan"></br>
               <button id="add-calendar" onclick="addcal()">Add Lesson Plan</button>
+
+
+              <div id="oneplan" style="visibility: hidden">
               <form class="mileadd" action="#" onsubmit="required()">
                   <input type="text" name="mile_name" placeholder="Name the Milestone"><br>
-		  <input type="text" name="mile_desc" placeholder="Describe the Milestoe"><br>
+		  <input type="text" name="mile_desc" placeholder="Describe the Milestone"><br>
 		  <input type="text" name="mile_date" placeholder="Enter the Milestone Due Date (YYYY-MM-DD)"><br>
 
                <h5>Milestone's Tasks:</h5>
@@ -143,6 +58,7 @@
                  Task 4 Description: <input type="text" name="task_desc4"><br>
 		 <button id="add-milestone" onclick="insertEvent()">ADD!</button>
                </form>
+             </div>
             </div>
          </div>
          <!-- Included JS Files (Uncompressed) -->
@@ -155,9 +71,7 @@
          <!-- Initialize JS Plugins -->
          <script src="javascripts/app.js"></script>
          <script type="text/javascript">
-	     window.onload = function() {
-      	       makeApiCall(uid);
-	     };
+
 	 </script>
      </body>
    </html>

@@ -2,23 +2,43 @@
 
 		var clientId = '823704617519.apps.googleusercontent.com';
 		var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
-		var scopes = 'https://www.googleapis.com/auth/calendar';
+		var scopes = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
 		var calid = 'g42kio0ms52em9nt39sjoulh7s@group.calendar.google.com';
 		//evar event titles
     	var evar = new Array();
     	//event id 
     	var eid = new Array();
+    	//event completion
+    	var ecomp = new Array();
     	//event date
     	var edate = new Array();
 
 		
 		// due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
-
+		
+		//Prints User Info by accessing json 
+		function printUserInfo(){
+	      gapi.client.load('oauth2', 'v1', function(){
+	        var userinfo = gapi.client.request('oauth2/v1/userinfo?alt=json');
+	        userinfo.execute(function(resp){
+	          window.uemail=(resp.email);
+	          window.uname=(resp.given_name);
+	          $('#header').html('<h5>Welcome '+uname+'! Your email address is '+uemail+'.</h5>');
+	        });
+	      });
+	    }
 
       // Loads the timeline on the side.  Display the results on the screen.
       	function loadTimeline() {
 	  		gapi.client.load('calendar', 'v3', function() {
+	  			var calendarRequest = gapi.client.calendar.calendarList.list();
 		    	var request = gapi.client.calendar.events.list({ 'calendarId': calid, 'orderBy': 'startTime', 'singleEvents': true });
+		    	
+		    	calendarRequest.execute(function(resp){
+		    		for (var i=0;i<resp.items.length;i++) {
+		    			console.log("CALENDAR ID "+resp.items[i].summary);
+		    		}
+		    	});
 
 			    request.execute(function(resp) {
 			      	for (var i = 0; i < resp.items.length; i++) {
@@ -40,22 +60,25 @@
 		gapi.client.load('calendar', 'v3', function() {
 			var eventToUpdate
 	  	function loadEvent(uid) {
+	  		window.curUID=uid;
 	  		gapi.client.load('calendar', 'v3', function() {
 			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
 
 				requestDesc.execute(function(resp) { 
 					var title = resp.summary;
-					var description = resp.description;
+					var description = resp.location;
+					var taskstring = resp.description;
 					console.log(description);
-					printInfo(title,description);
+					printInfo(title,description,taskstring);
 				});
 			});
 		}
 
-	  	function printInfo(lamft,lamfs) {
-	  			console.log("LAMFT "+lamft);
-		  		console.log("LAMFS "+lamfs);
-		  		var parsedWords = new Array;
+	  	function printInfo(lamft,lamfd,lamfs) {
+	  			//console.log("LAMFT "+lamft);
+	  			//console.log("LAMFD "+lamfd);
+		  		//console.log("LAMFS "+lamfs);
+		  		var parsedWords = new Array();
 				var curWord = "";
 				var i = 0;
 				while (i<lamfs.length)
@@ -79,24 +102,40 @@
 						curWord=curWord+lamfs.charAt(i);
 					i++;
 				}
-				console.log(parsedWords[1]);
-				console.log(parsedWords[2]);
+				//console.log(parsedWords[1]);
+				//console.log(parsedWords[2]);
 				//clears DOM element before insertion
-				$('#list_tasks, #miletitle').empty();
+				$('#list_tasks, #miletitle, #miledesc').empty();
+				//inserts data into DOM element
 				$('#miletitle').html(lamft);
+				$('#miledesc').html(lamfd);
 				for(i=1;i<parsedWords.length;i++)
 					{
-						$('#list_tasks').append("<div class='miletask'><div class='check'><input type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
+						$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
 					}
 	  	}
 
+	  	function completeEvent(uid) {
+	  		gapi.client.load('calendar', 'v3', function() {
+			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
+				var ERC = requestDesc.execute();
+				console.log(ERC.description);
+			});
+		}
+
+
   	$(document).on('click', '.eventlinks', function(event){ 
   		var tempid = $(this).attr('eid');
-    	alert('Finish your current task first!');
+    	//alert('Finish your current task first!');
     	//var pathname = window.location.pathname;
-    	console.log("TEMP ID " +tempid);
+    	//console.log("TEMP ID " +tempid);
     	loadEvent(tempid);
 	}); 
+
+	$('#list_tasks').on('click', '.taskcheck', function(event){
+		if (!$('input.taskcheck[type=checkbox]:not(:checked)').length)
+    		alert('all checked');
+    });
 
 
 
