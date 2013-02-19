@@ -2,8 +2,19 @@
       var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
       var scopes = 'https://www.googleapis.com/auth/calendar';
       var calnames = new Array();
+      var calval;
       
       // due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
+
+      // adds a new calendar
+      function addcal() {
+      calval = '%c_' + document.getElementById('calname').value;
+      console.log(calval);
+      gapi.client.load('calendar', 'v3', function() {
+        var request = gapi.client.calendar.calendars.insert( { 'resource': { 'summary': calval }});
+        request.execute(function(resp) { console.log(resp); calid = resp.id; console.log(calid); });
+      })
+      }
 
       // Use a button to handle authentication the first time. 
       function handleClientLoad() {
