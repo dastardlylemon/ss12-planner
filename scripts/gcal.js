@@ -62,14 +62,16 @@
                 {'calendarId': calid , 'eventId': uid}
             );
 
-            var eventToUpdate = eventToUpdateCall.execute();
-            eventToUpdate.description = newDesc;
-            var updatedEventCall = gapi.client.calendar.events.update(
-               {'calendarId': calid, 'eventId': uid}
-            );
+            eventToUpdateCall.execute(function(resp){
+            	resp.description = newDesc + " " + resp.description;
+            	console.log(resp.description);
+            	var updateStage = gapi.client.calendar.events.update(
+	               {'calendarId': calid, 'eventId': uid, 'resource': resp}
+	            );
 
-            var updatedEvent = updatedEventCall.execute();
-        };
+            	updateStage.execute();
+            });
+        });
     }; 
 
 
