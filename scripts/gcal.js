@@ -55,10 +55,26 @@
 			    });
 			});
 	  	}
+
+    function updateEvent(uid, newDesc) {
+        gapi.client.load('calendar', 'v3', function() {
+            var eventToUpdateCall = gapi.client.calendar.events.get(
+                {'calendarId': calid , 'eventId': uid}
+            );
+
+            var eventToUpdate = eventToUpdateCall.execute();
+            eventToUpdate.description = newDesc;
+            var updatedEventCall = gapi.client.calendar.events.update(
+               {'calendarId': calid, 'eventId': uid}
+            );
+
+            var updatedEvent = updatedEventCall.execute();
+        };
+    }; 
+
+
+
 	  	//Loads an individual event
-	function updateEvent(uid, newDesc) {
-		gapi.client.load('calendar', 'v3', function() {
-			var eventToUpdate
 	  	function loadEvent(uid) {
 	  		window.curUID=uid;
 	  		gapi.client.load('calendar', 'v3', function() {
