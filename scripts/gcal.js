@@ -17,7 +17,7 @@
 		// due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
 		
 		//Prints User Info by accessing json 
-		function printUserInfo(){
+		function fetchUserInfo(eid){
 	      gapi.client.load('oauth2', 'v1', function(){
 	        var userinfo = gapi.client.request('oauth2/v1/userinfo?alt=json');
 	        userinfo.execute(function(resp){
@@ -26,6 +26,7 @@
 	          	"name":resp.given_name,
 	          	"id":resp.id
 	          }
+	          loadEvent(eid);
 	          $('#header').html('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
@@ -57,44 +58,7 @@
 			      	};
 			    });
 			});
-	  	}
-
-    function updateEvent(uid) {
-        gapi.client.load('calendar', 'v3', function() {
-            var eventToUpdateCall = gapi.client.calendar.events.get(
-                {'calendarId': calid , 'eventId': uid}
-            );
-
-            eventToUpdateCall.execute(function(resp){
-
-				var completeEmail = "&d_" + user.email;
-				if (resp.description.search(completeEmail)==-1)
-            	{
-					resp.description = completeEmail + " " + resp.description;
-	            	var updateStage = gapi.client.calendar.events.update(
-		               {'calendarId': calid, 'eventId': uid, 'resource': resp}
-		            );
-
-	            	updateStage.execute(function(resp) {
-				       console.log(resp);
-					   if (resp.id){
-					   	 alert("Event completed!");
-					   }
-					   else{
-					   	alert("An error occurred. Please try again later.")
-					   }
-				       
-				     });
-	            }
-            	else
-            		alert("Event has already been completed");
-            	//console.log(resp.description);
-
-            });
-        });
-    }; 
-
-
+	  	} 
 
 	  	//Loads an individual event
 	  	function loadEvent(uid) {
@@ -106,16 +70,18 @@
 					var title = resp.summary;
 					var description = resp.location;
 					var taskstring = resp.description;
+	  				var completeEmail = "&d_" + user.email;
+	  				if (taskstring.search(completeEmail)!=-1)
+	  					var eventComplete = true;
+	  				else
+	  					var eventComplete = false;
 					console.log(description);
-					printInfo(title,description,taskstring);
+					printInfo(title,description,taskstring,eventComplete);
 				});
 			});
 		}
 
-	  	function printInfo(lamft,lamfd,lamfs) {
-	  			//console.log("LAMFT "+lamft);
-	  			//console.log("LAMFD "+lamfd);
-		  		//console.log("LAMFS "+lamfs);
+	  	function printInfo(lamft,lamfd,lamfs,itfec) {
 		  		var parsedWords = new Array();
 				var curWord = "";
 				var i = 0;
@@ -140,26 +106,57 @@
 						curWord=curWord+lamfs.charAt(i);
 					i++;
 				}
-				//console.log(parsedWords[1]);
-				//console.log(parsedWords[2]);
 				//clears DOM element before insertion
 				$('#list_tasks, #miletitle, #miledesc').empty();
 				//inserts data into DOM element
 				$('#miletitle').html(lamft);
 				$('#miledesc').html(lamfd);
-				for(i=1;i<parsedWords.length;i++)
-					{
-						$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
-					}
+				if (itfec)
+					for(i=1;i<parsedWords.length;i++)
+						{
+							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' checked /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
+						}
+				else
+					for(i=1;i<parsedWords.length;i++)
+						{
+							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
+						}
 	  	}
 
-	  	function completeEvent(uid) {
-	  		gapi.client.load('calendar', 'v3', function() {
-			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
-				var ERC = requestDesc.execute();
-				console.log(ERC.description);
-			});
-		}
+	    function completeEvent(uid){
+	        gapi.client.load('calendar', 'v3', function() {
+	            var eventToUpdateCall = gapi.client.calendar.events.get(
+	                {'calendarId': calid , 'eventId': uid}
+	            );
+
+	            eventToUpdateCall.execute(function(resp){
+
+					var completeEmail = "&d_" + user.email;
+					if (resp.description.search(completeEmail)==-1)
+	            	{
+						resp.description = completeEmail + " " + resp.description;
+		            	var updateStage = gapi.client.calendar.events.update(
+			               {'calendarId': calid, 'eventId': uid, 'resource': resp}
+			            );
+
+		            	updateStage.execute(function(resp) {
+					       console.log(resp);
+						   if (resp.id){
+						   	 alert("Event completed!");
+						   }
+						   else{
+						   	alert("An error occurred. Please try again later.")
+						   }
+					       
+					     });
+		            }
+	            	else
+	            		alert("Event has already been completed");
+	            	//console.log(resp.description);
+
+	            });
+	        });
+	    }
 
 
   	$(document).on('click', '.eventlinks', function(event){ 
@@ -172,7 +169,7 @@
 
 	$('#list_tasks').on('click', '.taskcheck', function(event){
 		if (!$('input.taskcheck[type=checkbox]:not(:checked)').length)
-    		alert('all checked');
+    		completeEvent(curUID);
     });
 
 
