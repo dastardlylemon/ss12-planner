@@ -34,11 +34,23 @@ function insertEvent() {
     var ms_title = document.getElementsByName('mile_name')[0].value;
     var ms_desc = document.getElementsByName('mile_desc')[0].value;
     var ms_time = document.getElementsByName('mile_date')[0].value;
+    var ms_tasks = document.getElementsByName('task_desc');
+
+    var ms_tdesc = '';
+    // generate the tasks
+    for (var i = 0; i < ms_tasks.length; i++) {
+        // trim whitespace from tasks, only adds if it's not empty
+        var thisTask = ms_tasks[i].value.replace(/^\s+/, '').replace(/\s+$/, '');
+        if (thisTask === '') continue;
+        else ms_tdesc = ms_tdesc + '&t_' + thisTask + ' ';
+    }
+    console.log(ms_tdesc);
 
     // generate a new gcal event resource
     var resource = {
         "summary": ms_title,
-        "description": ms_desc,
+        "description": ms_tdesc,
+        "location": ms_desc,
         "start": {
             "date": ms_time
         },
@@ -56,15 +68,26 @@ function insertEvent() {
 
             // and yet it usually refreshes before it can display an alert. oh, well.
             if (resp.id) {
-                alert("Milestone successfully added!");
+                console.log("Milestone successfully added!");
+                loadMilestones();
+                clearInputs();
             } else {
-                alert("An error occurred. Please try again later.")
+                console.log("An error occurred. Please try again later.")
             }
 
         });
     });
-    loadMilestones();
     return false;
+}
+
+// utility function for clearing everything after a button is pressed
+function clearInputs() {
+    var elements = document.getElementsByTagName("input");
+    for (var ii = 0; ii < elements.length; ii++) {
+        if (elements[ii].type == "text") {
+            elements[ii].value = "";
+        }
+    }
 }
 
 // Use a button to handle authentication the first time. 
