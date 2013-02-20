@@ -5,7 +5,6 @@ var scopes = 'https://www.googleapis.com/auth/calendar';
 var calnames = new Array();
 var calids = new Array();
 var calval;
-var calid;
 var currentPlan = 0;
 
 // due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
@@ -21,12 +20,9 @@ function addcal() {
             }
         });
         request.execute(function (resp) {
-            console.log(resp);
-            calid = resp.id;
-            console.log(calid);
+            location.reload();
         });
     })
-    location.reload();
 }
 
 // adds a new milestone to the plan
@@ -179,14 +175,13 @@ function makeApiCall() {
 }
 
 function draw() {
-    loadMilestones();
-
     // change the text as appropriate
     if (calnames && calnames.length > 0) {
-        var oneplan = document.getElementById('oneplan');
-        oneplan.style.visibility = '';
-        oneplan.style.display = 'block';
+        var op = document.getElementById('oneplan');
+        op.style.visibility = '';
+        op.style.display = 'block';
         document.getElementById('noplans').innerHTML = "<h3>Add a new plan:</h3>";
+        loadMilestones();
     }
 
     // show a dropdown if there are multiple plans
