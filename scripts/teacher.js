@@ -5,6 +5,7 @@
       var calids = new Array();
       var calval;
       var calid;
+      var currentPlan = 0;
       
       // due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
 
@@ -46,7 +47,8 @@
         return false;
       }
 
-    function getCalList() {
+// this doesn't work and i don't even need it right now
+/*    function getCalList() {
         gapi.client.load('calendar', 'v3', function() {
             var request = gapi.client.calendar.calendarList.list({ showHidden : true });
 
@@ -66,7 +68,7 @@
             for (var j = 0
             //do something here
         }
-    }
+    }*/
 
 
       // Load the API and make an API call.  Display the results on the screen.
@@ -84,7 +86,6 @@
           }
 
         }
-        console.log(resp.items[i].summary);
       }
 
 
@@ -92,7 +93,7 @@
         console.log(calnames[i]);
 
       // grab the first calendar for now, log all milestones to the console (will add to DOM later)
-      request = gapi.client.calendar.events.list({ 'calendarId': calids[0] });
+      request = gapi.client.calendar.events.list({ 'calendarId': calids[currentPlan] });
       request.execute(function(resp) {
         for (var j = 0; j < resp.items.length; j++) {
           console.log(resp.items[j].summary);
@@ -106,6 +107,34 @@
       } else {
         var oneplan = document.getElementById('oneplan');
         oneplan.style.visibility = '';
+        var nocalblock = document.getElementById('noplans');
+        nocalblock.style.visibility = '';
+        var nd = document.createElement('h3');
+        nocalblock.innerHTML="<h3>Now Editing</h3>";
+        //nocalblock.appendChild(nd);
+      }
+
+      document.getElementById('current-plan').style.visibility = '';
+
+      // create a select list if more than one calendar
+      if (calnames.length >= 1) {
+        var select = document.createElement('select');
+        select.setAttribute('name', 'plans');
+        select.setAttribute('id', 'select-plans');
+
+        select.onchange = function() { // switch out calendar info here
+        }
+
+        var option;
+        for (var k = 0; k < calnames.length; k++) {
+          option = document.createElement('option');
+          var namae = calnames[k].substring(3);
+          option.setAttribute('value', namae);
+          option.innerHTML=namae;
+          select.appendChild(option);
+        }
+        console.log("we're done now");
+        document.getElementById('current-plan').appendChild(select);
       }
     });
   });
