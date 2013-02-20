@@ -212,6 +212,27 @@ p.splashdesc {
 	color: #fff;
 }
 
+.milestone {
+  float: left;
+  background-color: #fff;
+  padding: 10px;
+  margin: 5px;
+  border-bottom: 3px solid #dfdfdf;
+}
+
+.milestone:hover {
+  background-color: #f1bf6c;
+  color: #fff;
+}
+
+#milestones:nth-child(2) {
+  margin-left: -10px;
+}
+
+#oneplan h3 {
+  margin-top: 90px;
+}
+
 #miletitle {
 	text-transform: uppercase;
 	color: #f1bf6c;

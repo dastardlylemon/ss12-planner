@@ -1,3 +1,4 @@
+// global variables and constants
 var clientId = '823704617519.apps.googleusercontent.com';
 var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
 var scopes = 'https://www.googleapis.com/auth/calendar';
@@ -25,6 +26,45 @@ function addcal() {
             console.log(calid);
         });
     })
+    location.reload();
+}
+
+// adds a new milestone to the plan
+function insertEvent() {
+    var ms_title = document.getElementsByName('mile_name')[0].value;
+    var ms_desc = document.getElementsByName('mile_desc')[0].value;
+    var ms_time = document.getElementsByName('mile_date')[0].value;
+
+    // generate a new gcal event resource
+    var resource = {
+        "summary": ms_title,
+        "description": ms_desc,
+        "start": {
+            "date": ms_time
+        },
+        "end": {
+            "date": ms_time
+        }
+    };
+    gapi.client.load('calendar', 'v3', function () {
+        var request = gapi.client.calendar.events.insert({
+            'calendarId': calids[currentPlan],
+            'resource': resource
+        });
+        request.execute(function (resp) {
+            console.log(resp);
+
+            // and yet it usually refreshes before it can display an alert. oh, well.
+            if (resp.id) {
+                alert("Milestone successfully added!");
+            } else {
+                alert("An error occurred. Please try again later.")
+            }
+
+        });
+    });
+    loadMilestones();
+    return false;
 }
 
 // Use a button to handle authentication the first time. 
@@ -43,6 +83,7 @@ function checkAuth() {
 
 
 function handleAuthResult(authResult) {
+    // interim authorization code, though you shouldn't be able to get here without being authorized
     var authorizeButton = document.getElementById('authorize-button');
     if (authResult && !authResult.error) {
         makeApiCall();
@@ -115,62 +156,66 @@ function makeApiCall() {
 }
 
 function draw() {
-  loadMilestones();
+    loadMilestones();
 
-  // change the text as appropriate
-  if (calnames && calnames.length > 0) {
-      var oneplan = document.getElementById('oneplan');
-      oneplan.style.visibility = '';
-      oneplan.style.display = 'block';
-      document.getElementById('noplans').innerHTML = "<h3>Add a new plan:</h3>";
-  }
+    // change the text as appropriate
+    if (calnames && calnames.length > 0) {
+        var oneplan = document.getElementById('oneplan');
+        oneplan.style.visibility = '';
+        oneplan.style.display = 'block';
+        document.getElementById('noplans').innerHTML = "<h3>Add a new plan:</h3>";
+    }
 
-  // show a dropdown if there are multiple plans
-  if (calnames && calnames.length >= 1)
-    document.getElementById('current-plan').style.visibility = '';
+    // show a dropdown if there are multiple plans
+    if (calnames && calnames.length >= 1) document.getElementById('current-plan').style.visibility = '';
 
-  // create a select list if more than one calendar
-  if (calnames.length >= 1) {
-      var select = document.createElement('select');
-      select.setAttribute('name', 'plans');
-      select.setAttribute('id', 'select-plans');
+    // create a select list if more than one calendar
+    if (calnames.length >= 1) {
+        var select = document.createElement('select');
+        select.setAttribute('name', 'plans');
+        select.setAttribute('id', 'select-plans');
 
-      select.onchange = function () { 
-        currentPlan = select.value;
-        console.log(currentPlan);
-        loadMilestones();
-      }
+        select.onchange = function () {
+            currentPlan = select.value;
+            console.log(currentPlan);
+            loadMilestones();
+        }
 
-      var option;
-      for (var k = 0; k < calnames.length; k++) {
-          option = document.createElement('option');
-          var namae = calnames[k].substring(3);
-          option.setAttribute('value', k);
-          option.innerHTML = namae;
-          select.appendChild(option);
-      }
-      document.getElementById('current-plan').appendChild(select);
-  }
+        var option;
+        for (var k = 0; k < calnames.length; k++) {
+            option = document.createElement('option');
+            var namae = calnames[k].substring(3);
+            option.setAttribute('value', k);
+            option.innerHTML = namae;
+            select.appendChild(option);
+        }
+        document.getElementById('current-plan').appendChild(select);
+    }
 }
 
+// load/refresh the milestone list
 function loadMilestones() {
-  var request = gapi.client.calendar.events.list({
-      'calendarId': calids[currentPlan]
-  });
+    var request = gapi.client.calendar.events.list({
+        'calendarId': calids[currentPlan]
+    });
 
-  var mdiv = document.getElementById('milestones');
-  mdiv.style.display = 'block';
-  mdiv.innerHTML = "<h3>Milestones:</h3>";
-  var mstone;
-  request.execute(function (resp) {
-      if (resp.items) {
-        for (var j = 0; j < resp.items.length; j++) {
-          console.log(resp.items[j].summary);
-          mstone = document.createElement('div');
-          mstone.setAttribute('class', 'milestone');
-          mstone.innerHTML = resp.items[j].summary;
-          document.getElementById('milestones').appendChild(mstone);
+    var mdiv = document.getElementById('milestones');
+    mdiv.style.display = 'block';
+    mdiv.setAttribute('style', '');
+    mdiv.innerHTML = "<h3>Milestones:</h3>";
+    var mstone;
+    request.execute(function (resp) {
+        if (resp.items) {
+            for (var j = 0; j < resp.items.length; j++) {
+                console.log(resp.items[j].summary);
+                mstone = document.createElement('div');
+                mstone.setAttribute('class', 'milestone');
+                mstone.innerHTML = resp.items[j].summary;
+                mdiv.appendChild(mstone);
+            }
+        } else {
+            mdiv.innerHTML = "<h5>No Milestones available</h5>";
+            mdiv.setAttribute('style', 'margin-bottom: -90px;');
         }
-      }
-  })
+    })
 }
