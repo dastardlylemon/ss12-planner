@@ -1,77 +1,78 @@
 <!DOCTYPE html>
 <!--[if IE 8]>    
 <html class="no-js lt-ie9" lang="en">
-   <![endif]-->
-   <!--[if gt IE 8]><!--> 
-   <html class="no-js" lang="en">
-   <div id="content"></div>
-      <!--<![endif]-->
-
-
-     <head>
-         <meta charset="utf-8" />
-         <!-- Set the viewport width to device width for mobile -->
-         <meta name="viewport" content="width=device-width" />
-         <title>Planner</title>
-         <!-- Included CSS Files (Uncompressed) -->
-         <!--
-            <link rel="stylesheet" href="stylesheets/foundation.css">
-            -->
-         <!-- Included CSS Files (Compressed) -->
-         <link rel="stylesheet" href="stylesheets/foundation.min.css" />
-         <link rel="stylesheet" href="stylesheets/app.css" />
-         <link rel="stylesheet" href="stylesheets/style.css" />
-         <script src="javascripts/modernizr.foundation.js"></script>
-     </head>
-     <body>
-         <div id="header">
-	   <h2>Habitask</h2>
-	 </div>
-         <div class="row">
-         <button id="authorize-button" style="visibility: hidden">Authorize</button> <br>
-          <script src="scripts/teacher.js"></script>
-          <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
-
-
-
-
-
-
-
-            <div class="content eleven columns">
-	      <br>
-              <div id="noplans" style="visibility: hidden"><h3>It seems that you don&rsquo;t have any lesson plans! Why don&rsquo;t you start off by creating one?</h3></div>
-              <input type="text" id="calname" placeholder="Name your lesson plan"></br>
-              <button id="add-calendar" onclick="addcal()">Add Lesson Plan</button>
-
-
-              <div id="oneplan" style="visibility: hidden">
-              <form class="mileadd" action="#" onsubmit="required()">
-                  <input type="text" name="mile_name" placeholder="Name the Milestone"><br>
-		  <input type="text" name="mile_desc" placeholder="Describe the Milestone"><br>
-		  <input type="text" name="mile_date" placeholder="Enter the Milestone Due Date (YYYY-MM-DD)"><br>
-
-               <h5>Milestone's Tasks:</h5>
-                 Task 1 Description: <input type="text" name="task_desc1"><br>
-                 Task 2 Description: <input type="text" name="task_desc2"><br>
-                 Task 3 Description: <input type="text" name="task_desc3"><br>
-                 Task 4 Description: <input type="text" name="task_desc4"><br>
-		 <button id="add-milestone" onclick="insertEvent()">ADD!</button>
-               </form>
-             </div>
-            </div>
-         </div>
-         <!-- Included JS Files (Uncompressed) -->
-         <!--
-            <script src="javascripts/jquery.js"></script><script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script><script src="javascripts/jquery.foundation.forms.js"></script><script src="javascripts/jquery.foundation.reveal.js"></script><script src="javascripts/jquery.foundation.orbit.js"></script><script src="javascripts/jquery.foundation.navigation.js"></script><script src="javascripts/jquery.foundation.buttons.js"></script><script src="javascripts/jquery.foundation.tabs.js"></script><script src="javascripts/jquery.foundation.tooltips.js"></script><script src="javascripts/jquery.foundation.accordion.js"></script><script src="javascripts/jquery.placeholder.js"></script><script src="javascripts/jquery.foundation.alerts.js"></script><script src="javascripts/jquery.foundation.topbar.js"></script><script src="javascripts/jquery.foundation.joyride.js"></script><script src="javascripts/jquery.foundation.clearing.js"></script><script src="javascripts/jquery.foundation.magellan.js"></script>
-            -->
-         <!-- Included JS Files (Compressed) -->
-         <script src="javascripts/jquery.js"></script>
-         <script src="javascripts/foundation.min.js"></script>
-         <!-- Initialize JS Plugins -->
-         <script src="javascripts/app.js"></script>
-         <script type="text/javascript">
-
-	 </script>
-     </body>
-   </html>
+  <![endif]-->
+  <!--[if gt IE 8]><!--> 
+  <html class="no-js" lang="en">
+    <div id="content"></div>
+    <!--<![endif]-->
+    <head>
+      <meta charset="utf-8" />
+      <!-- Set the viewport width to device width for mobile -->
+      <meta name="viewport" content="width=device-width" />
+      <title>Planner</title>
+      <!-- Included CSS Files (Uncompressed) -->
+      <!--
+        <link rel="stylesheet" href="stylesheets/foundation.css">
+        -->
+      <!-- Included CSS Files (Compressed) -->
+      <link rel="stylesheet" href="stylesheets/foundation.min.css" />
+      <link rel="stylesheet" href="stylesheets/app.css" />
+      <link rel="stylesheet" href="stylesheets/style.css" />
+      <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+      <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+      <script src="javascripts/modernizr.foundation.js"></script>
+    </head>
+    <body>
+      <div id="header">
+        <h2>Habitask</h2>
+      </div>
+      <div class="row">
+        <script src="scripts/teacher.js"></script>
+        <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+        <div id="load-message" style="text-align: center;"><h1 style="color: #f1bf6c;">Loading...</h1><img src="img/loader.gif" /></div>
+        <div class="content eleven columns" id="auth-console" style="display: none;">
+          <br />
+          <div id="current-plan" style="visibility: hidden">
+            <h3>Current plan:</h3>
+          </div>
+          <br />
+          <div id="milestones" style="display: none;">
+            <h3>Milestones:</h3>
+          </div>
+          <br />
+          <div id="oneplan" style="visibility: hidden; display: none;">
+            <h3>Add a new Milestone:</h3>
+            <!--<form class="mileadd">-->
+              <input type="text" name="mile_name" placeholder="Name" /><br />
+              <input type="text" name="mile_desc" placeholder="Description" /><br />
+              <input type="text" name="mile_date" placeholder="Due Date (YYYY-MM-DD)" /><br />
+              <h5 style="margin: -15px 0px 0px 0px;">Tasks:</h5>
+              These are optional, but try to add at least one with a clear description. <br />
+              <input type="text" name="task_desc" placeholder="Task 1" /><br />
+              <input type="text" name="task_desc" placeholder="Task 2" /><br />
+              <input type="text" name="task_desc" placeholder="Task 3" /><br />
+              <input type="text" name="task_desc" placeholder="Task 4" /><br />
+              <button id="add-milestone" onclick="insertEvent()">Add Milestone</button>
+            <!--</form>-->
+          </div>
+          <br /><br />
+          <div id="noplans">
+            <h3>It seems that you don&rsquo;t have any lesson plans! Why don&rsquo;t you start off by creating one?</h3>
+          </div>
+          <input type="text" id="calname" placeholder="Name your lesson plan" /></br>
+          <button id="add-calendar" onclick="addcal()">Add Lesson Plan</button>
+        </div>
+      </div>
+      <!-- Included JS Files (Uncompressed) -->
+      <!--
+        <script src="javascripts/jquery.js"></script><script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script><script src="javascripts/jquery.foundation.forms.js"></script><script src="javascripts/jquery.foundation.reveal.js"></script><script src="javascripts/jquery.foundation.orbit.js"></script><script src="javascripts/jquery.foundation.navigation.js"></script><script src="javascripts/jquery.foundation.buttons.js"></script><script src="javascripts/jquery.foundation.tabs.js"></script><script src="javascripts/jquery.foundation.tooltips.js"></script><script src="javascripts/jquery.foundation.accordion.js"></script><script src="javascripts/jquery.placeholder.js"></script><script src="javascripts/jquery.foundation.alerts.js"></script><script src="javascripts/jquery.foundation.topbar.js"></script><script src="javascripts/jquery.foundation.joyride.js"></script><script src="javascripts/jquery.foundation.clearing.js"></script><script src="javascripts/jquery.foundation.magellan.js"></script>
+        -->
+      <!-- Included JS Files (Compressed) -->
+      <script src="javascripts/jquery.js"></script>
+      <script src="javascripts/foundation.min.js"></script>
+      <!-- Initialize JS Plugins -->
+      <script src="javascripts/app.js"></script>
+      <script type="text/javascript"></script>
+    </body>
+  </html>
