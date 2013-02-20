@@ -115,15 +115,7 @@ function makeApiCall() {
 }
 
 function draw() {
-  // grab the first calendar for now, log all milestones to the console (will add to DOM later)
-  var request = gapi.client.calendar.events.list({
-      'calendarId': calids[currentPlan]
-  });
-  request.execute(function (resp) {
-      for (var j = 0; j < resp.items.length; j++) {
-          console.log(resp.items[j].summary);
-      }
-  })
+  loadMilestones();
 
   // change the text as appropriate
   if (calnames && calnames.length > 0) {
@@ -143,17 +135,42 @@ function draw() {
       select.setAttribute('name', 'plans');
       select.setAttribute('id', 'select-plans');
 
-      select.onchange = function () { // switch out calendar info here
+      select.onchange = function () { 
+        currentPlan = select.value;
+        console.log(currentPlan);
+        loadMilestones();
       }
 
       var option;
       for (var k = 0; k < calnames.length; k++) {
           option = document.createElement('option');
           var namae = calnames[k].substring(3);
-          option.setAttribute('value', namae);
+          option.setAttribute('value', k);
           option.innerHTML = namae;
           select.appendChild(option);
       }
       document.getElementById('current-plan').appendChild(select);
   }
+}
+
+function loadMilestones() {
+  var request = gapi.client.calendar.events.list({
+      'calendarId': calids[currentPlan]
+  });
+
+  var mdiv = document.getElementById('milestones');
+  mdiv.style.display = 'block';
+  mdiv.innerHTML = "<h3>Milestones:</h3>";
+  var mstone;
+  request.execute(function (resp) {
+      if (resp.items) {
+        for (var j = 0; j < resp.items.length; j++) {
+          console.log(resp.items[j].summary);
+          mstone = document.createElement('div');
+          mstone.setAttribute('class', 'milestone');
+          mstone.innerHTML = resp.items[j].summary;
+          document.getElementById('milestones').appendChild(mstone);
+        }
+      }
+  })
 }
