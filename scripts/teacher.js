@@ -46,6 +46,25 @@
         return false;
       }
 
+    function getCalList() {
+        gapi.client.load('calendar', 'v3', function() {
+            var request = gapi.client.calendar.calendarList.list({ showHidden : true });
+
+            request.execute(function(resp) {
+                for (var i = 0; i < resp.items.length; i++) {
+                    if (resp.items[i].summary !== undefined) {
+                        if (resp.items[i].summary.substring(0,3) == "&c_") {
+                            calendarNames.push(resp.items[i].summary);
+                            calendarIDs.push(resp.items[i].id);
+                        }
+                    }
+                }
+            }
+            //do something here
+        }
+    }
+
+
       // Load the API and make an API call.  Display the results on the screen.
       function makeApiCall() {
       gapi.client.load('calendar', 'v3', function() {
