@@ -39,7 +39,7 @@ function insertEvent() {
     var ms_tdesc = '';
     // generate the tasks
     for (var i = 0; i < ms_tasks.length; i++) {
-        // trim whitespace from tasks, only adds if it's not empty
+        // trim leading/trailing whitespace from tasks, only adds if it's not empty
         var thisTask = ms_tasks[i].value.replace(/^\s+/, '').replace(/\s+$/, '');
         if (thisTask === '') continue;
         else ms_tdesc = ms_tdesc + '&t_' + thisTask + ' ';
