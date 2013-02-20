@@ -55,11 +55,15 @@
                     if (resp.items[i].summary !== undefined) {
                         if (resp.items[i].summary.substring(0,3) == "&c_") {
                             calendarNames.push(resp.items[i].summary);
+                            console.log(resp.items[i].summary);
                             calendarIDs.push(resp.items[i].id);
+                            console.log(resp.items[i].id);
                         }
                     }
                 }
             }
+            //omg what
+            for (var j = 0
             //do something here
         }
     }
