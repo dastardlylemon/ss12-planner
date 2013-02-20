@@ -106,21 +106,34 @@
 						curWord=curWord+lamfs.charAt(i);
 					i++;
 				}
+				if (parsedWords.length==0)
+				{
+					$('#miletitle').html(lamft);
+					$('#miledesc').html(lamfd);
+					alert('Tasks have not yet been added for this Milestone');
+				}
 				//clears DOM element before insertion
 				$('#list_tasks, #miletitle, #miledesc').empty();
 				//inserts data into DOM element
-				$('#miletitle').html(lamft);
-				$('#miledesc').html(lamfd);
 				if (itfec)
+				{
+					$('#miletitle').html(lamft).css({'text-decoration':'line-through'});
+					$('#miledesc').html(lamfd).css({'text-decoration':'line-through'});
+					$('#mastercheck input').attr('checked','checked');
 					for(i=1;i<parsedWords.length;i++)
 						{
 							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' checked /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
 						}
+				}
 				else
+				{
+					$('#miletitle').html(lamft);
+					$('#miledesc').html(lamfd);
 					for(i=1;i<parsedWords.length;i++)
 						{
 							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
 						}
+				}
 	  	}
 
 	    function completeEvent(uid){

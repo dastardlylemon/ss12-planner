@@ -295,6 +295,14 @@ label {
 	float: left;
 }
 
+#mastercheck {
+  float: right;
+  text-align: right;
+  margin: 100px 100px 0 0;
+}
+
+#mastercheck input
+
 .tasktitle {
 	font-size: 1.3em;
 	line-height: 25px;

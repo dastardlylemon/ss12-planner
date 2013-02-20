@@ -24,7 +24,6 @@
       </head>
       <body>
       <script type="text/javascript">
-         // Use a button to handle authentication the first time. 
       function handleClientLoad() {
         gapi.client.setApiKey(apiKey);
         window.setTimeout(checkAuth,1);
@@ -47,71 +46,26 @@
         }
       }
 
-      function handleAuthClick(event) {
-        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-        return false;
-      }
          </script>
          <div id="header"></div>
                   <div id="leftbar">
             <h5>Timeline</h5>
             <div id="timespine"></div>
             <ul id="list_events">
-              <!--
-              <li style=""><h6>Feb 2</h6><span class="tooltip">Write a Thesis Statement or maybe this is just to make everything longer</span></li>
-              <li><h6>Feb 2</h6><span class="tooltip">Milestone title here</span></li>
-              <li><h6>Feb 2</h6><span class="tooltip">Milestone title here</span></li>
-              <li><h6>Feb 2</h6><span class="tooltip">Milestone title here</span></li>
-              <li><h6>Feb 29</h6><span class="tooltip">Milestone title here</span></li>
-              <li><h6>Feb 2</h6><span class="tooltip">Milestone title here</span></li>
-              <li><h6>Feb 2</h6><span class="tooltip">Milestone title here</span></li>-->
+              <!--<li><h6>"+edate[i]+"</h6><span class='tooltip'><a eid='"+eid[i]+"' class='eventlinks' id='"+eid[i]+"'>"+evar[i]+"</a></span></li>-->
             <p class="fadeout"></p>
-            </ul>
+            </ul><!--#list_events-->
          </div>
          <div class="row">
             <div class="content eleven columns">
+               <div id='mastercheck'><input type='checkbox' disabled/><label>Completed!</label></div>
                <h5>Today&rsquo;s Milestone:</h5>
-               <div id="miletitle">TITLE HERE</div>
-               <div id="miledesc">DESC HERE</div>
+               <div id="miletitle"><!--TITLE HERE--></div>
+               <div id="miledesc"><!--DESC HERE--></div>
                <h5>Current Tasks:</h5>
                <div class="row" id="list_tasks">
-                  <!--<div class="miletask">
-                     <div class="check">
-                        <input type="checkbox" />
-                        <label>Done!</label>
-                     </div>
-                     <div class="taskdata">
-                        <div class="tasktitle">Do research on the topic. Who are you writing about? What's his name?</div>
-                     </div>
-                  </div>
-                  <div class="miletask">
-                     <div class="check">
-                        <input type="checkbox" />
-                        <label>Done!</label>
-                     </div>
-                     <div class="taskdata">
-                        <div class="tasktitle">Do research on the topic. Who are you writing about? What's his name?</div>
-                     </div>
-                  </div>
-                  <div class="miletask">
-                     <div class="check">
-                        <input type="checkbox" />
-                        <label>Done!</label>
-                     </div>
-                     <div class="taskdata">
-                        <div class="tasktitle">Do research on the topic. Who are you writing about? What's his name?</div>
-                     </div>
-                  </div>
-                  <div class="miletask">
-                     <div class="check">
-                        <input type="checkbox" />
-                        <label>Done!</label>
-                     </div>
-                     <div class="taskdata">
-                        <div class="tasktitle">Do research on the topic. Who are you writing about? What's his name?</div>
-                     </div>
-                  </div>-->
-               </div>
+                <!--<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>-->
+               </div><!--#list_tasks-->
             </div>
          </div>
          <div class="footer">
@@ -123,17 +77,13 @@
                </div>
             </div>
          </div>
-         <!-- Included JS Files (Uncompressed) -->
-         <!--
-            <script src="javascripts/jquery.js"></script><script src="javascripts/jquery.foundation.mediaQueryToggle.js"></script><script src="javascripts/jquery.foundation.forms.js"></script><script src="javascripts/jquery.foundation.reveal.js"></script><script src="javascripts/jquery.foundation.orbit.js"></script><script src="javascripts/jquery.foundation.navigation.js"></script><script src="javascripts/jquery.foundation.buttons.js"></script><script src="javascripts/jquery.foundation.tabs.js"></script><script src="javascripts/jquery.foundation.tooltips.js"></script><script src="javascripts/jquery.foundation.accordion.js"></script><script src="javascripts/jquery.placeholder.js"></script><script src="javascripts/jquery.foundation.alerts.js"></script><script src="javascripts/jquery.foundation.topbar.js"></script><script src="javascripts/jquery.foundation.joyride.js"></script><script src="javascripts/jquery.foundation.clearing.js"></script><script src="javascripts/jquery.foundation.magellan.js"></script>
-            -->
          <!-- Included JS Files (Compressed) -->
          <script src="javascripts/jquery.js"></script>
          <script src="javascripts/foundation.min.js"></script>
          <!-- Initialize JS Plugins -->
-  <script src="javascripts/app.js"></script>
-  <script src="scripts/gcal.js"></script>
-  <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+        <script src="javascripts/app.js"></script>
+        <script src="scripts/gcal.js"></script>
+        <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 
 
          
