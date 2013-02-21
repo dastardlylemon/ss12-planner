@@ -105,6 +105,9 @@
 					{
 						$('#miletitle').html(events[index].title);
 						$('#miledesc').html(events[index].description);
+						$('#miletitle').html(events[index].title).css({'text-decoration':'none'});
+						$('#miledesc').html(events[index].description).css({'text-decoration':'none'});
+						$('#mastercheck').html("<input type='checkbox' disabled/><label>Completed!</label>");
 						alert('Tasks have not yet been added for this Milestone');
 						$('#load-message').hide();
 						$('.auth-console').show();
