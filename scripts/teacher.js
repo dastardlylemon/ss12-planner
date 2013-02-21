@@ -103,14 +103,12 @@ function checkAuth() {
 
 function handleAuthResult(authResult) {
     // interim authorization code, though you shouldn't be able to get here without being authorized
-    var authorizeButton = document.getElementById('authorize-button');
     if (authResult && !authResult.error) {
         makeApiCall();
         var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
         setTimeout(checkAuth, authTimeout);
     } else {
-        authorizeButton.onclick = handleAuthClick;
-        console.log("Error! Could not authenticate!");
+        window.location="index.html";
     }
 }
 
