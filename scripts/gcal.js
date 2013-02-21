@@ -33,7 +33,7 @@
 
 		function handleAuthResult(authResult) {
 			if (authResult && !authResult.error) {
-				loadTimeline(fetchUserInfo,loadEvent);
+				fetchUserInfo(loadTimeline,loadEvent);
 				//fetchUserInfo(loadEvent);
 				var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
 				setTimeout(checkAuth, authTimeout);
@@ -43,7 +43,7 @@
 			}
 		}
 		//Prints User Info by accessing json 
-		function fetchUserInfo(callback){
+		function fetchUserInfo(callback,callback2){
 	      gapi.client.load('oauth2', 'v1', function(){
 	        var userinfo = gapi.client.request('oauth2/v1/userinfo?alt=json');
 	        userinfo.execute(function(resp){
@@ -52,14 +52,14 @@
 	          	"name":resp.given_name,
 	          	"id":resp.id
 	          }
-	          callback(curIndex);
+	          callback(callback2);
 	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
 	    }
 
       // Loads the timeline on the side.  Display the results on the screen.
-      	function loadTimeline(callback, callback2) {
+      	function loadTimeline(callback) {
 	  		gapi.client.load('calendar', 'v3', function() {
 	  			var calendarRequest = gapi.client.calendar.calendarList.list();
 	  			window.curIndex = 0;
@@ -91,7 +91,7 @@
 			      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 			      	}
 			      	$('#leftbar').show();
-			      	callback(callback2);
+			      	callback(curIndex);
 			    });
 			});
 	  	} 
