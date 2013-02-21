@@ -26,7 +26,7 @@
 	          	"name":resp.given_name,
 	          	"id":resp.id
 	          }
-	          eid();
+	          eid;
 	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });

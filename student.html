@@ -37,7 +37,7 @@
 
       function handleAuthResult(authResult) {
         if (authResult && !authResult.error) {
-          fetchUserInfo(loadEvent('sssjtb43u55ek0uidvh9u16f20'));
+          fetchUserInfo();
           loadTimeline();
           var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
           setTimeout(checkAuth, authTimeout);
