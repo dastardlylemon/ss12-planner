@@ -7,6 +7,7 @@
     	var events = new Array();
     	var calendars = new Array();
     	var curCalIndex = 0;
+    	var curIndex = 0;
 
     	//Constructor for an event resource
     	function resource(title,id,description,tasks,start,end,complete) {
@@ -66,7 +67,6 @@
       	function loadTimeline() {
 	  		gapi.client.load('calendar', 'v3', function() {
 	  			var calendarRequest = gapi.client.calendar.calendarList.list();
-	  			window.curIndex = 0;
 		    	calendarRequest.execute(function(resp){
 		    		for (var i=0;i<resp.items.length;i++) {
 		    			if (resp.items[i].summary !== undefined) {
@@ -219,12 +219,11 @@
 					       console.log(resp);
 						   if (resp.id){
 						   	 alert("Event completed!");
-						   	 events[index].complete="complete"
 						   }
 						   else{
 						   	alert("An error occurred. Please try again later.");
 						   }
-					       clearScreen(index);
+					       loadTimeline();
 					     });
 		            }
 	            	else
