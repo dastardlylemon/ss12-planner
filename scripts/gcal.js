@@ -74,12 +74,10 @@
 		    					calendars.push(new calendar(resp.items[i].summary.substring(3),resp.items[i].id));
 		    				}
 		    			}
+		    		}
 		    		for (var i=0;i<calendars.length;i++)
 		    		{
 		    			$('#plan-select').append('<option id="'+calendars[i].id+'" >'+calendars[i].name+'</option>');
-		    		}
-
-		    			console.log("CALENDAR NAME "+resp.items[i].summary);
 		    		}
 		    		var request = gapi.client.calendar.events.list({ 'calendarId': calendars[curCalIndex].id, 'orderBy': 'startTime', 'singleEvents': true });
 
