@@ -37,13 +37,13 @@
           }
         
           function handleAuthResult(authResult) {
-            var authorizeButton = $('#authorize-button');
             if (authResult && !authResult.error) {
               var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
             setTimeout(checkAuth, authTimeout);
             } else {
-              $('#authorize-button').show;
-              $('#authorize-button').click(function handleAuthClick(event) {
+              $('.authorize-button').show();
+              $('#buttons').hide()
+              $('.authorize-button').click(function handleAuthClick(event) {
             gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
             return false;
           });
@@ -55,7 +55,7 @@
       </script>
     </head>
     <div class="header">
-      <a href="#" id="authorize-button"><h5 style="float:right; color: #fff; margin-right: 20px; ">Login</h5></a>
+      <a href="#" class="authorize-button"><h5 style="float:right; color: #fff; margin-right: 20px; ">Login</h5></a>
     </div>
     <body class="splash">
       <div class="row">
@@ -76,6 +76,7 @@
           <div>
             <h2>LOGIN</h2>
             <p>Ready to try out Habitask for yourself? Just sign in with your Google account and we can get down to business.</p>
+            <a href="#" class="authorize-button"><h5>Login</h5></a>
             <div id="buttons"><a href="student.html"><button>I&rsquo;m a student</button></a><a href="teacher.html"><button>I&rsquo;m a teacher</button></a></div>
             <br /><br />
             <a href="#close" title="Close">Close</a>
