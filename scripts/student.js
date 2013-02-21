@@ -25,7 +25,7 @@
 
 
 
-		// due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
+		//Checking for authentication with Google's OAuth API
 		function handleClientLoad() {
 	        gapi.client.setApiKey(apiKey);
 	        window.setTimeout(checkAuth,1);
@@ -45,24 +45,25 @@
 				window.location="index.html";
 			}
 		}
-		//Prints User Info by accessing json 
+
+		//Saves user info to a global object variable.
 		function fetchUserInfo(){
 	      gapi.client.load('oauth2', 'v1', function(){
 	        var userinfo = gapi.client.request('oauth2/v1/userinfo?alt=json');
 	        userinfo.execute(function(resp){
 	          window.user={
 	          	"email":resp.email,
-	          	"name":resp.given_name,
-	          	"id":resp.id
+	          	//"name":resp.given_name,
+	          	//"id":resp.id
 	          }
 	          loadTimeline();
-	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
 	    }
 
       // Loads the timeline on the side.  Display the results on the screen.
       	function loadTimeline() {
+      		//Calls Google's API to retrieve all accessible calendars that have been prepended with Habitask's custom tag. In this case, all calendars created via Habitask are prepended with "&c_"
 	  		gapi.client.load('calendar', 'v3', function() {
 	  			var calendarRequest = gapi.client.calendar.calendarList.list();
 		    	calendarRequest.execute(function(resp){
@@ -70,10 +71,12 @@
 		    		for (var i=0;i<resp.items.length;i++) {
 		    			if (resp.items[i].summary !== undefined) {
                     		if (resp.items[i].summary.substring(0, 3) == "&c_") {
+                    			//Pushes each calendar to an object in the calendars array
 		    					calendars.push(new calendar(resp.items[i].summary.substring(3),resp.items[i].id));
 		    				}
 		    			}
 		    		}
+		    		//Displays the list of calendars in a drop down
 		    		$('#plan-select').empty();
 		    		for (var i=0;i<calendars.length;i++)
 		    		{
@@ -82,6 +85,7 @@
 		    			else 
 		    				$('#plan-select').append('<option class="calselect" value="'+i+'" >'+calendars[i].name+'</option>');
 		    		}
+		    		//Calls Google's API to retrieve all events from the current Calendar
 		    		var request = gapi.client.calendar.events.list({ 'calendarId': calendars[curCalIndex].id, 'orderBy': 'startTime', 'singleEvents': true });
 
 				    request.execute(function(resp) {
@@ -102,6 +106,7 @@
 						        else 
 						        	var eventComplete = "ncomplete";
 						        console.log(eventComplete);
+						        //Pushes each event to an object in the events array
 						        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
 					      	}
 					      	printTimeline();
@@ -114,6 +119,7 @@
 			});
 		}
 
+		//Iterates through the events array and displays each entry
 		function printTimeline(){
 	      	$('#list_events').empty();
 	      	for (var j=0; j<events.length; j++) {
@@ -128,6 +134,7 @@
 	      	clearScreen(curIndex);
 		}
 
+		//Displays info on one specific event
 	  	function printInfo(index) {
 		  		if (!events[index].tasks)
 					{
@@ -144,6 +151,8 @@
 		  		var parsedWords = new Array();
 				var curWord = "";
 				var i = 0;
+				//Habitask stores the tasks of a Milestone in the description field of a gCal event. Each task is prepended with "&t_"
+				//This iterates through the description string and parses out each task
 				while (i<events[index].tasks.length)
 				{
 					if (i==events[index].tasks.length-1)
@@ -153,7 +162,7 @@
 						i++;
 						continue;
 					}
-					//MAJOR ISSUES AND LOGIC ERRORS
+					
 					if (events[index].tasks[i]=='&'&&events[index].tasks[i+1]=='t'&&events[index].tasks[i+2]=='_')
 					{	
 						parsedWords.push(curWord);
@@ -165,9 +174,7 @@
 						curWord=curWord+events[index].tasks[i];
 					i++;
 				}
-				//clears DOM element before insertion
-				//$('#list_tasks, #miletitle, #miledesc').empty();
-				//inserts data into DOM element
+
 				if (events[index].complete=="complete")
 				{
 					$('#duedate').html('You have completed this milestone');
@@ -194,6 +201,7 @@
 				$('.auth-console').show();
 	  	}
 
+	  	//Clears the screen
 	  	function clearScreen(index) {
 	  		$('#load-message').show();
 	  		$('.auth-console').hide();
@@ -201,6 +209,7 @@
 	  		printInfo(index);
 	  	}
 
+	  	//Calls Google's API to update the calendar to allow the student user to "complete" the Milestone. This inserts the user's email prepended by "&d_" into the description field of the event as well"
 	    function completeEvent(index){
 	        gapi.client.load('calendar', 'v3', function() {
 	            var eventToUpdateCall = gapi.client.calendar.events.get(
