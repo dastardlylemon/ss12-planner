@@ -94,6 +94,7 @@ a, a:visited, a:hover {
 
 #leftbar li.complete {
   background-color: #f1bf6c;
+  color: #fff;
 }
 
 #leftbar li h6 {
