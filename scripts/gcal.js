@@ -119,7 +119,7 @@
 		}**/
 
 	  	function printInfo(index) {
-		  		if (!lamfs)
+		  		if (!events[index].tasks)
 					{
 						$('#miletitle').html(events[index].title);
 						$('#miledesc').html(events[index].description);
