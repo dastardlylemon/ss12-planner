@@ -77,7 +77,7 @@
 		    		}
 		    		for (var i=0;i<calendars.length;i++)
 		    		{
-		    			$('#plan-select').append('<option class="calselect" id="'+calendars[i].id+'" >'+calendars[i].name+'</option>');
+		    			$('#plan-select').append('<option class="calselect" value="'+calendars[i].id+'" >'+calendars[i].name+'</option>');
 		    		}
 		    		var request = gapi.client.calendar.events.list({ 'calendarId': calendars[curCalIndex].id, 'orderBy': 'startTime', 'singleEvents': true });
 
@@ -225,8 +225,8 @@
     	clearScreen(index);
 	}); 
 
-	$(document).on('click', '.calselect', function(event){ 
-  		var temp = $(this).attr('id');
+	$('#plan-select').on('change', function(event){ 
+  		var temp = $(this).attr('value');
     	if (temp!=curid)
     	{
     		calid=temp;
