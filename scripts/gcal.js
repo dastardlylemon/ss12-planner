@@ -227,7 +227,7 @@
 	}); 
 
 	$('#plan-select').change(function(){
-		var temp = $(this).attr('value');
+		var temp = $(this).val();
 		if (temp!=curCalIndex)
     	{
     		curCalIndex=temp;
