@@ -235,6 +235,7 @@
 
   	$(document).on('click', '.eventlinks', function(event){ 
   		var index = $(this).attr('index');
+  		curIndex=index;
     	clearScreen(index);
 	}); 
 
