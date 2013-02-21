@@ -82,11 +82,8 @@
 				    	if (resp.items)
 				    	{
 					      	for (var i = 0; i < resp.items.length; i++) {
-					      		console.log('iterate');
 						        var parsedDate = new Date(resp.items[i].end.date);
-						        console.log('iterate1');
 						        var curDate = new Date();
-						        console.log('iterate2');
 						        if (curIndex==0 && parsedDate>=curDate)
 						        	curIndex = i;
 						        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate()+1);
@@ -94,7 +91,6 @@
 						        	var eventComplete = "complete";
 						        else 
 						        	var eventComplete = "ncomplete";
-						        console.log(eventComplete);
 						        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
 					      	}
 					      	printTimeline();
@@ -245,7 +241,7 @@
 
 	$('#list_tasks').on('click', '.taskcheck', function(event){
 		if (!$('input.taskcheck[type=checkbox]:not(:checked)').length)
-    		completeEvent(curIndex);
+    		{completeEvent(curIndex);alert('yes');}
     });
 
 
