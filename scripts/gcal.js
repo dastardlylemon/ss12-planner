@@ -78,7 +78,7 @@
 				        if (curIndex==0 && parsedDate>=curDate)
 				        	curIndex = i;
 				        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
-				        if (resp.items[i].description && resp.items[i].description.search("&d_"+user.email))
+				        if (resp.items[i].description && resp.items[i].description.search("&d_"+user.email)!=-1)
 				        	var eventComplete = "complete";
 				        else 
 				        	var eventComplete = "ncomplete";
