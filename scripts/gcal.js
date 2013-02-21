@@ -173,10 +173,10 @@
 				$('.auth-console').show();
 	  	}
 
-	  	function clearScreen(callback,index) {
+	  	function clearScreen(callback,callback2) {
 	  		$('#load-message').show();
 	  		$('.auth-console').hide();
-	  		callback(index);
+	  		callback(callback2);
 	  	}
 
 	    function completeEvent(index){
@@ -203,7 +203,7 @@
 						   else{
 						   	alert("An error occurred. Please try again later.")
 						   }
-					       clearScreen(loadEvent,index);
+					       clearScreen(loadTimeline,loadEvent);
 					     });
 		            }
 	            	else
