@@ -1,4 +1,3 @@
-
 		var clientId = '823704617519.apps.googleusercontent.com';
 		var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
 		var scopes = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
@@ -124,7 +123,7 @@
 	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      	}
 	      	$('#leftbar').show();
-	      	clearScreen(curIndex);
+	      	printInfo(curIndex);
 		}
 
 	  	function printInfo(index) {
@@ -218,10 +217,9 @@
 					       console.log(resp);
 						   if (resp.id){
 						   	 alert("Event completed!");
-						   	 events[index].complete="complete"
 						   }
 						   else{
-						   	alert("An error occurred. Please try again later.");
+						   	alert("An error occurred. Please try again later.")
 						   }
 					       clearScreen(index);
 					     });
@@ -235,7 +233,6 @@
 
   	$(document).on('click', '.eventlinks', function(event){ 
   		var index = $(this).attr('index');
-  		curIndex=index;
     	clearScreen(index);
 	}); 
 
@@ -244,8 +241,6 @@
 		if (temp!=curCalIndex)
     	{
     		curCalIndex=temp;
-    		events.length=0;
-    		calendars.length=0;
     		loadTimeline();
     	}
 	})
