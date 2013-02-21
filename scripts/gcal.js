@@ -221,7 +221,7 @@
 						   	 alert("Event completed!");
 						   }
 						   else{
-						   	alert("An error occurred. Please try again later.")
+						   	alert("An error occurred. Please try again later.");
 						   }
 					       clearScreen(index);
 					     });
