@@ -26,7 +26,7 @@
 	          	"name":resp.given_name,
 	          	"id":resp.id
 	          }
-	          eid;
+	          eid(sssjtb43u55ek0uidvh9u16f20);
 	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
