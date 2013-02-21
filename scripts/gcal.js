@@ -9,13 +9,14 @@
     	//events.sort(function(a,b){return a>b ? -1 : a<b ? 1 : 0;})
 
     	//Constructor for an event resource
-    	function resource(title,id,description,tasks,start,end) {
+    	function resource(title,id,description,tasks,start,end,complete) {
 			this.title = title;
 			this.id = id;
 			this.description = description;
 			this.tasks = tasks;
 			this.start = start;
 			this.end = end;
+			this.complete = complete;
 		}
 		 
 
@@ -77,13 +78,17 @@
 				        if (curIndex==0 && parsedDate>=curDate)
 				        	curIndex = i;
 				        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
-				        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate);
+				        if (resp.items[i].description & resp.items[i].description.search("&d_"+user.email))
+				        	var eventComplete = complete;
+				        else 
+				        	var eventComplete = ncomplete;
+				        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
 			      	};
 			      	for (var j=0; j<events.length; j++) {
 			      		if (j<curIndex)
-			      			$('#list_events').append("<li class='pastdue'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
+			      			$('#list_events').append("<li class='pastdue "+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 			      		else 
-			      			$('#list_events').append("<li><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
+			      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 			      	}
 			      	$('#leftbar').show();
 			      	callback(callback2);
@@ -101,11 +106,7 @@
 					var title = resp.summary;
 					var description = resp.location;
 					var taskstring = resp.description;
-	  				var completeEmail = "&d_" + user.email;
-	  				if (taskstring && taskstring.search(completeEmail)!=-1)
-	  					var eventComplete = true;
-	  				else
-	  					var eventComplete = false;
+					var eventComplete = events[index].complete;
 					console.log(description);
 					printInfo(title,description,taskstring,eventComplete);
 				});
