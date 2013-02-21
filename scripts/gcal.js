@@ -81,9 +81,9 @@
 			      	};
 			      	for (var j=0; j<events.length; j++) {
 			      		if (j<curIndex)
-			      			$('#list_events').append("<li><h6>"+edate+"</h6><span class='tooltip'><a eid='"+events[i].id+"' class='eventlinks' id='"+events[i].id+"'>"+events[i].title+"</a></span></li>");
+			      			$('#list_events').append("<li><h6>"+events[j].end+"</h6><span class='tooltip'><a eid='"+events[j].id+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 			      		else 
-			      			$('#list_events').append("<li><h6>"+edate+"</h6><span class='tooltip'><a eid='"+events[i].id+"' class='eventlinks' id='"+events[i].id+"'>"+events[i].title+"</a></span></li>");
+			      			$('#list_events').append("<li><h6>"+events[j].end+"</h6><span class='tooltip'><a eid='"+events[j].id+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 			      	}
 			      	$('#leftbar').show();
 			      	callback(callback2);
