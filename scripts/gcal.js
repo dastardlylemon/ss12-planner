@@ -6,7 +6,7 @@
 		var calid = 'g42kio0ms52em9nt39sjoulh7s@group.calendar.google.com';
 		//evar event titles
     	var events = new Array();
-    	events.sort(function(a,b){return a>b ? -1 : a<b ? 1 : 0;})
+    	//events.sort(function(a,b){return a>b ? -1 : a<b ? 1 : 0;})
 
     	//Constructor for an event resource
     	function resource(title,id,description,tasks,start,end) {
@@ -32,8 +32,8 @@
 
 		function handleAuthResult(authResult) {
 			if (authResult && !authResult.error) {
-				loadTimeline();
-				fetchUserInfo(loadEvent);
+				loadTimeline(fetchUserInfo,loadEvent);
+				//fetchUserInfo(loadEvent);
 				var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
 				setTimeout(checkAuth, authTimeout);
 			} 
@@ -42,7 +42,7 @@
 			}
 		}
 		//Prints User Info by accessing json 
-		function fetchUserInfo(eid){
+		function fetchUserInfo(callback){
 	      gapi.client.load('oauth2', 'v1', function(){
 	        var userinfo = gapi.client.request('oauth2/v1/userinfo?alt=json');
 	        userinfo.execute(function(resp){
@@ -51,16 +51,17 @@
 	          	"name":resp.given_name,
 	          	"id":resp.id
 	          }
-	          eid('sssjtb43u55ek0uidvh9u16f20');
+	          callback(events[curIndex].id);
 	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
 	    }
 
       // Loads the timeline on the side.  Display the results on the screen.
-      	function loadTimeline() {
+      	function loadTimeline(callback, callback2) {
 	  		gapi.client.load('calendar', 'v3', function() {
 	  			var calendarRequest = gapi.client.calendar.calendarList.list();
+	  			window.curIndex = 0;
 		    	var request = gapi.client.calendar.events.list({ 'calendarId': calid, 'orderBy': 'startTime', 'singleEvents': true });
 		    	
 		    	calendarRequest.execute(function(resp){
@@ -72,11 +73,15 @@
 			    request.execute(function(resp) {
 			      	for (var i = 0; i < resp.items.length; i++) {
 				        var parsedDate = new Date(resp.items[i].end.date);
+				        var curDate = new Date();
+				        if (curIndex==0 && parsedDate>=curDate)
+				        	curIndex = i;
 				        var edate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
 				        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,resp.items[i].end.date);
 				      	$('#list_events').append("<li><h6>"+edate+"</h6><span class='tooltip'><a eid='"+events[i].id+"' class='eventlinks' id='"+events[i].id+"'>"+events[i].title+"</a></span></li>");
 			      	};
 			      	$('#leftbar').show();
+			      	callback(callback2);
 			    });
 			});
 	  	} 
