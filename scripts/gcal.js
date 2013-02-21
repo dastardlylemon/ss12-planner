@@ -86,6 +86,7 @@
 				    	if (resp.items)
 				    	{
 					      	for (var i = 0; i < resp.items.length; i++) {
+					      		console.log('iterate');
 						        var parsedDate = new Date(resp.items[i].end.date);
 						        var curDate = new Date();
 						        if (curIndex==0 && parsedDate>=curDate)
