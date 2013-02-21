@@ -80,7 +80,6 @@
 			});
 	  	} 
 
-<<<<<<< HEAD
 		function printTimeline(){
 	      	$('#list_events').empty();
 	      	for (var j=0; j<events.length; j++) {
@@ -93,7 +92,6 @@
 	      	}
 	      	$('#leftbar').show();
 	      	printInfo(curIndex);
-=======
 	  	//Loads an individual event
 	  	function loadEvent (uid) {
 	  		window.curUID=uid;
@@ -113,7 +111,6 @@
 					printInfo(title,description,taskstring,eventComplete);
 				});
 			});
->>>>>>> 0fdc4bfed1ca5afad7f7f0d3aa7e68853547d23c
 		}
 
 	  	function printInfo(lamft,lamfd,lamfs,itfec) {
