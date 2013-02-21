@@ -77,7 +77,7 @@ a, a:visited, a:hover {
 }
 
 #leftbar li.pastdue {
-  border: solid 5px #dfdfdf;
+  background-color: solid 5px #dfdfdf;
 }
 
 #leftbar li h6 {
@@ -87,16 +87,12 @@ a, a:visited, a:hover {
 }
 
 #leftbar li.pastdue h6 {
-  color: #dfdfdf;
+  color: #fff;
 }
 
 #leftbar li:hover {
 	background-color: #f1bf6c;
 	cursor: pointer;
-}
-
-#leftbar li.pastdue:hover {
-  background-color: #dfdfdf;
 }
 
 #leftbar li:hover h6 {
