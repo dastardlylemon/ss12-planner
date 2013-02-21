@@ -77,7 +77,7 @@
 		    		}
 		    		for (var i=0;i<calendars.length;i++)
 		    		{
-		    			$('#plan-select').append('<option class="calselect" value="'+i+'" >'+calendars[i].name+'</option>');
+		    			$('#plan-select').append('<option class="calselect" value="'+(i-1)+'" >'+calendars[i].name+'</option>');
 		    		}
 		    		var request = gapi.client.calendar.events.list({ 'calendarId': calendars[curCalIndex].id, 'orderBy': 'startTime', 'singleEvents': true });
 
