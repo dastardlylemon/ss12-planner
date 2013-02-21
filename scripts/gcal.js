@@ -1,15 +1,29 @@
-var clientId = '823704617519.apps.googleusercontent.com';
+
+
+		var clientId = '823704617519.apps.googleusercontent.com';
 		var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
 		var scopes = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
 		var calid = 'g42kio0ms52em9nt39sjoulh7s@group.calendar.google.com';
-		//evar event titles
-    	var evar = new Array();
-    	//event id 
-    	var eid = new Array();
-    	//event completion
-    	var ecomp = new Array();
-    	//event date
-    	var edate = new Array();
+    	var events = new Array();
+    	var calendars = new Array();
+    	var curCalIndex = 0;
+
+    	//Constructor for an event resource
+    	function resource(title,id,description,tasks,start,end,complete) {
+			this.title = title;
+			this.id = id;
+			this.description = description;
+			this.tasks = tasks;
+			this.start = start;
+			this.end = end;
+			this.complete = complete;
+		}
+
+		function calendar(name,id) {
+			this.name = name;
+			this.id = id;
+		}
+		 
 
 		
 		// due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
@@ -24,8 +38,7 @@ var clientId = '823704617519.apps.googleusercontent.com';
 
 		function handleAuthResult(authResult) {
 			if (authResult && !authResult.error) {
-				fetchUserInfo(loadEvent);
-				loadTimeline();
+				fetchUserInfo();
 				var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
 				setTimeout(checkAuth, authTimeout);
 			} 
@@ -34,7 +47,7 @@ var clientId = '823704617519.apps.googleusercontent.com';
 			}
 		}
 		//Prints User Info by accessing json 
-		function fetchUserInfo(eid){
+		function fetchUserInfo(callback,callback2,callback3){
 	      gapi.client.load('oauth2', 'v1', function(){
 	        var userinfo = gapi.client.request('oauth2/v1/userinfo?alt=json');
 	        userinfo.execute(function(resp){
@@ -43,7 +56,7 @@ var clientId = '823704617519.apps.googleusercontent.com';
 	          	"name":resp.given_name,
 	          	"id":resp.id
 	          }
-	          eid('sssjtb43u55ek0uidvh9u16f20');
+	          loadTimeline();
 	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
@@ -53,30 +66,38 @@ var clientId = '823704617519.apps.googleusercontent.com';
       	function loadTimeline() {
 	  		gapi.client.load('calendar', 'v3', function() {
 	  			var calendarRequest = gapi.client.calendar.calendarList.list();
-		    	var request = gapi.client.calendar.events.list({ 'calendarId': calid, 'orderBy': 'startTime', 'singleEvents': true });
-		    	
+	  			window.curIndex = 0;
 		    	calendarRequest.execute(function(resp){
 		    		for (var i=0;i<resp.items.length;i++) {
-		    			console.log("CALENDAR ID "+resp.items[i].summary);
-		    		}
-		    	});
+		    			if (resp.items[i].summary !== undefined) {
+                    		if (resp.items[i].summary.substring(0, 3) == "&c_") {
+		    					calendars.push(new calendar(resp.items[i].summary.substring(3),resp.items[i].id));
+		    				}
+		    			}
 
-			    request.execute(function(resp) {
-			      	for (var i = 0; i < resp.items.length; i++) {
-				        var li = document.createElement('li');
-				        li.appendChild(document.createTextNode(resp.items[i].summary));
-				        evar[i] = resp.items[i].summary;
-				        console.log(evar[i]);
-				        eid[i] = resp.items[i].id;
-				        console.log(eid[i]);
-				        var parsedDate = new Date(resp.items[i].end.date);
-				        edate[i]=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
-				      	$('#list_events').append("<li><h6>"+edate[i]+"</h6><span class='tooltip'><a eid='"+eid[i]+"' class='eventlinks' id='"+eid[i]+"'>"+evar[i]+"</a></span></li>");
-			      	};
-			      	$('#leftbar').show();
-			    });
+		    			console.log("CALENDAR NAME "+resp.items[i].summary);
+		    		}
+		    		var request = gapi.client.calendar.events.list({ 'calendarId': calendars[curCalIndex].id, 'orderBy': 'startTime', 'singleEvents': true });
+
+				    request.execute(function(resp) {
+				      	for (var i = 0; i < resp.items.length; i++) {
+					        var parsedDate = new Date(resp.items[i].end.date);
+					        var curDate = new Date();
+					        if (curIndex==0 && parsedDate>=curDate)
+					        	curIndex = i;
+					        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
+					        if (resp.items[i].description && resp.items[i].description.search("&d_"+user.email)!=-1)
+					        	var eventComplete = "complete";
+					        else 
+					        	var eventComplete = "ncomplete";
+					        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
+				      	};
+				      	printTimeline();
+			    	});
+		    	});
+		    	
 			});
-	  	} 
+		}
 
 		function printTimeline(){
 	      	$('#list_events').empty();
@@ -84,48 +105,41 @@ var clientId = '823704617519.apps.googleusercontent.com';
 	      		if (j<curIndex)
 	      			$('#list_events').append("<li class='pastdue "+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      		else if (j=curIndex)
-	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip' style='display:block;'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
+	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip' style='display:block;''><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      		else 
 	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      	}
 	      	$('#leftbar').show();
 	      	printInfo(curIndex);
-	  	//Loads an individual event
-	  	function loadEvent (uid) {
-	  		window.curUID=uid;
-	  		gapi.client.load('calendar', 'v3', function() {
-			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
-
-				requestDesc.execute(function(resp) { 
-					var title = resp.summary;
-					var description = resp.location;
-					var taskstring = resp.description;
-	  				var completeEmail = "&d_" + user.email;
-	  				if (taskstring.search(completeEmail)!=-1)
-	  					var eventComplete = true;
-	  				else
-	  					var eventComplete = false;
-					console.log(description);
-					printInfo(title,description,taskstring,eventComplete);
-				});
-			});
 		}
 
-	  	function printInfo(lamft,lamfd,lamfs,itfec) {
+	  	function printInfo(index) {
+		  		if (!events[index].tasks)
+					{
+						$('#miletitle').html(events[index].title);
+						$('#miledesc').html(events[index].description);
+						$('#miletitle').html(events[index].title).css({'text-decoration':'none'});
+						$('#miledesc').html(events[index].description).css({'text-decoration':'none'});
+						$('#mastercheck').html("<input type='checkbox' disabled/><label>Completed!</label>");
+						alert('Tasks have not yet been added for this Milestone');
+						$('#load-message').hide();
+						$('.auth-console').show();
+						return;
+					}
 		  		var parsedWords = new Array();
 				var curWord = "";
 				var i = 0;
-				while (i<lamfs.length)
+				while (i<events[index].tasks.length)
 				{
-					if (i==lamfs.length-1)
+					if (i==events[index].tasks.length-1)
 					{
-						curWord=curWord+lamfs.charAt(i);
+						curWord=curWord+events[index].tasks[i];
 						parsedWords.push(curWord);
 						i++;
 						continue;
 					}
 					//MAJOR ISSUES AND LOGIC ERRORS
-					if (lamfs[i]=='&'&&lamfs[i+1]=='t'&&lamfs[i+2]=='_')
+					if (events[index].tasks[i]=='&'&&events[index].tasks[i+1]=='t'&&events[index].tasks[i+2]=='_')
 					{	
 						parsedWords.push(curWord);
 						curWord="";
@@ -133,51 +147,47 @@ var clientId = '823704617519.apps.googleusercontent.com';
 						continue;
 					}
 					else 
-						curWord=curWord+lamfs.charAt(i);
+						curWord=curWord+events[index].tasks[i];
 					i++;
 				}
-				if (parsedWords.length==0)
-				{
-					$('#miletitle').html(lamft);
-					$('#miledesc').html(lamfd);
-					alert('Tasks have not yet been added for this Milestone');
-				}
 				//clears DOM element before insertion
-				$('#list_tasks, #miletitle, #miledesc').empty();
+				//$('#list_tasks, #miletitle, #miledesc').empty();
 				//inserts data into DOM element
-				if (itfec)
+				if (events[index].complete=="complete")
 				{
-					$('#miletitle').html(lamft).css({'text-decoration':'line-through'});
-					$('#miledesc').html(lamfd).css({'text-decoration':'line-through'});
-					$('#mastercheck input').attr('checked','checked');
+					$('#miletitle').html(events[index].title).css({'text-decoration':'line-through'});
+					$('#miledesc').html(events[index].description).css({'text-decoration':'line-through'});
+					$('#mastercheck').html("<input type='checkbox' checked='checked' disabled/><label>Completed!</label>");
 					for(i=1;i<parsedWords.length;i++)
 						{
-							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' checked /><label>Done!</label></div><div class='taskdata'><div class='tasktitle' style='font-size: 1.3em;'>"+parsedWords[i]+"</div></div></div>");
+							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' checked /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
 						}
 				}
 				else
 				{
-					$('#miletitle').html(lamft);
-					$('#miledesc').html(lamfd);
+					$('#miletitle').html(events[index].title).css({'text-decoration':'none'});
+					$('#miledesc').html(events[index].description).css({'text-decoration':'none'});
+					$('#mastercheck').html("<input type='checkbox' disabled/><label>Completed!</label>");
 					for(i=1;i<parsedWords.length;i++)
 						{
-							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle' style='font-size: 1.3em; '>"+parsedWords[i]+"</div></div></div>");
+							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
 						}
 				}
 				$('#load-message').hide();
 				$('.auth-console').show();
 	  	}
 
-	  	function clearScreen(callback,uid) {
+	  	function clearScreen(index) {
 	  		$('#load-message').show();
 	  		$('.auth-console').hide();
-	  		callback(uid);
+	  		$('#list_tasks, #miletitle, #miledesc').empty();
+	  		printInfo(index);
 	  	}
 
-	    function completeEvent(uid){
+	    function completeEvent(index){
 	        gapi.client.load('calendar', 'v3', function() {
 	            var eventToUpdateCall = gapi.client.calendar.events.get(
-	                {'calendarId': calid , 'eventId': uid}
+	                {'calendarId': calid , 'eventId': events[index].id}
 	            );
 
 	            eventToUpdateCall.execute(function(resp){
@@ -187,7 +197,7 @@ var clientId = '823704617519.apps.googleusercontent.com';
 	            	{
 						resp.description = completeEmail + " " + resp.description;
 		            	var updateStage = gapi.client.calendar.events.update(
-			               {'calendarId': calid, 'eventId': uid, 'resource': resp}
+			               {'calendarId': calid, 'eventId': events[index].id, 'resource': resp}
 			            );
 
 		            	updateStage.execute(function(resp) {
@@ -198,7 +208,7 @@ var clientId = '823704617519.apps.googleusercontent.com';
 						   else{
 						   	alert("An error occurred. Please try again later.")
 						   }
-					       clearScreen(loadEvent,uid);
+					       clearScreen(loadTimeline,loadEvent);
 					     });
 		            }
 	            	else
@@ -209,13 +219,13 @@ var clientId = '823704617519.apps.googleusercontent.com';
 
 
   	$(document).on('click', '.eventlinks', function(event){ 
-  		var tempid = $(this).attr('eid');
-    	loadEvent(tempid);
+  		var index = $(this).attr('index');
+    	clearScreen(index);
 	}); 
 
 	$('#list_tasks').on('click', '.taskcheck', function(event){
 		if (!$('input.taskcheck[type=checkbox]:not(:checked)').length)
-    		completeEvent(curUID);
+    		completeEvent(curIndex);
     });
 
 
