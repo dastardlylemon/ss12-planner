@@ -74,6 +74,10 @@
 		    					calendars.push(new calendar(resp.items[i].summary.substring(3),resp.items[i].id));
 		    				}
 		    			}
+		    		for (var i=0;i<calendars.length;i++)
+		    		{
+		    			$('#plan-select').append('<select id="'+calendars[i].id+'" >'+calendars[i].name+'</select>');
+		    		}
 
 		    			console.log("CALENDAR NAME "+resp.items[i].summary);
 		    		}
