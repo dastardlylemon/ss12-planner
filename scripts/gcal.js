@@ -200,7 +200,7 @@
 
   	$(document).on('click', '.eventlinks', function(event){ 
   		var tempid = $(this).attr('eid');
-    	loadEvent(tempid);
+    	clearScreen(loadEvent,tempid);
 	}); 
 
 	$('#list_tasks').on('click', '.taskcheck', function(event){
