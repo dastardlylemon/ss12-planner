@@ -154,7 +154,7 @@
 				//clears DOM element before insertion
 				$('#list_tasks, #miletitle, #miledesc').empty();
 				//inserts data into DOM element
-				if (itfec=="complete")
+				if (events[index].complete=="complete")
 				{
 					$('#miletitle').html(events[index].title).css({'text-decoration':'line-through'});
 					$('#miledesc').html(events[index].description).css({'text-decoration':'line-through'});
