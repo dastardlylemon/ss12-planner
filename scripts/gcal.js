@@ -102,7 +102,7 @@
 		}
 
 	  	function printInfo(lamft,lamfd,lamfs,itfec) {
-		  		if (lamfs.length==0)
+		  		if (!lamfs)
 					{
 						$('#miletitle').html(lamft);
 						$('#miledesc').html(lamfd);
