@@ -47,7 +47,7 @@
 			}
 		}
 		//Prints User Info by accessing json 
-		function fetchUserInfo(callback,callback2,callback3){
+		function fetchUserInfo(){
 	      gapi.client.load('oauth2', 'v1', function(){
 	        var userinfo = gapi.client.request('oauth2/v1/userinfo?alt=json');
 	        userinfo.execute(function(resp){
@@ -77,7 +77,7 @@
 		    		}
 		    		for (var i=0;i<calendars.length;i++)
 		    		{
-		    			$('#plan-select').append('<option id="'+calendars[i].id+'" >'+calendars[i].name+'</option>');
+		    			$('#plan-select').append('<option class="calselect" id="'+calendars[i].id+'" >'+calendars[i].name+'</option>');
 		    		}
 		    		var request = gapi.client.calendar.events.list({ 'calendarId': calendars[curCalIndex].id, 'orderBy': 'startTime', 'singleEvents': true });
 
@@ -210,7 +210,7 @@
 						   else{
 						   	alert("An error occurred. Please try again later.")
 						   }
-					       clearScreen(loadTimeline,loadEvent);
+					       clearScreen(index);
 					     });
 		            }
 	            	else
@@ -223,6 +223,15 @@
   	$(document).on('click', '.eventlinks', function(event){ 
   		var index = $(this).attr('index');
     	clearScreen(index);
+	}); 
+
+	$(document).on('click', '.calselect', function(event){ 
+  		var temp = $(this).attr('id');
+    	if (temp!=curid)
+    	{
+    		calid=temp;
+    		loadTimeline();
+    	}
 	}); 
 
 	$('#list_tasks').on('click', '.taskcheck', function(event){
