@@ -89,9 +89,6 @@
 						        console.log('iterate2');
 						        if (curIndex==0 && parsedDate>=curDate)
 						        	curIndex = i;
-						        else
-						        	curIndex = 0;
-						        console.log(curIndex);
 						        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate()+1);
 						        if (resp.items[i].description && resp.items[i].description.search("&d_"+user.email)!=-1)
 						        	var eventComplete = "complete";
