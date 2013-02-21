@@ -149,7 +149,7 @@
 				//clears DOM element before insertion
 				$('#list_tasks, #miletitle, #miledesc').empty();
 				//inserts data into DOM element
-				if (itfec)
+				if (itfec=="complete")
 				{
 					$('#miletitle').html(lamft).css({'text-decoration':'line-through'});
 					$('#miledesc').html(lamfd).css({'text-decoration':'line-through'});
