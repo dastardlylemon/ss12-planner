@@ -199,7 +199,7 @@
 	            );
 
 	            eventToUpdateCall.execute(function(resp){
-
+	            	alert(resp.description);
 					var completeEmail = "&d_" + user.email;
 					if (resp.description.search(completeEmail)==-1)
 	            	{
