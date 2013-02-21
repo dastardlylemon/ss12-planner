@@ -25,6 +25,18 @@ a, a:visited, a:hover {
 	background-color: #f1bf6c;
 }
 
+#header p {
+  font-size: 1.3em;
+  float: right;
+  margin: 10px 15px 0px 0px;
+}
+
+#plan-select {
+  float: right;
+  margin: 15px 15px 0px 0px;
+  width: 250px;
+}
+
 #container {
   min-height:100%;
   position:relative;
