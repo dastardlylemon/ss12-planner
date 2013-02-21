@@ -83,19 +83,24 @@
 		    		var request = gapi.client.calendar.events.list({ 'calendarId': calendars[curCalIndex].id, 'orderBy': 'startTime', 'singleEvents': true });
 
 				    request.execute(function(resp) {
-				      	for (var i = 0; i < resp.items.length; i++) {
-					        var parsedDate = new Date(resp.items[i].end.date);
-					        var curDate = new Date();
-					        if (curIndex==0 && parsedDate>=curDate)
-					        	curIndex = i;
-					        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
-					        if (resp.items[i].description && resp.items[i].description.search("&d_"+user.email)!=-1)
-					        	var eventComplete = "complete";
-					        else 
-					        	var eventComplete = "ncomplete";
-					        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
-				      	};
-				      	printTimeline();
+				    	if (resp.items)
+				    	{
+					      	for (var i = 0; i < resp.items.length; i++) {
+						        var parsedDate = new Date(resp.items[i].end.date);
+						        var curDate = new Date();
+						        if (curIndex==0 && parsedDate>=curDate)
+						        	curIndex = i;
+						        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
+						        if (resp.items[i].description && resp.items[i].description.search("&d_"+user.email)!=-1)
+						        	var eventComplete = "complete";
+						        else 
+						        	var eventComplete = "ncomplete";
+						        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
+					      	};
+					      	printTimeline();
+				      	}
+				      	else
+				      		alert ('Calendar contains no Milestones');
 			    	});
 		    	});
 		    	
