@@ -149,8 +149,8 @@
 				}
 				else
 				{
-					$('#miletitle').html(lamft);
-					$('#miledesc').html(lamfd);
+					$('#miletitle').html(lamft).css({'text-decoration':'none'});
+					$('#miledesc').html(lamfd).css({'text-decoration':'none'});
 					$('#mastercheck').html("<input type='checkbox' disabled/><label>Completed!</label>");
 					for(i=1;i<parsedWords.length;i++)
 						{
