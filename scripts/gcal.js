@@ -199,7 +199,7 @@
 	  	function clearScreen(index) {
 	  		$('#load-message').show();
 	  		$('.auth-console').hide();
-	  		$('#list_tasks, #miletitle, #miledesc').empty();
+	  		$('#list_tasks, #miletitle, #miledesc, .footername').empty();
 	  		printInfo(index);
 	  	}
 
