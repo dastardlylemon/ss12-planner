@@ -76,7 +76,7 @@ a, a:visited, a:hover {
 	font-family: 'proxima_nova_ltbold', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
-#leftbar li.completed {
+#leftbar li.pastdue {
   border: solid 5px #dfdfdf;
 }
 
@@ -86,7 +86,7 @@ a, a:visited, a:hover {
 	color: #f1bf6c;
 }
 
-#leftbar li.completed h6 {
+#leftbar li.pastdue h6 {
   color: #dfdfdf;
 }
 
@@ -95,7 +95,7 @@ a, a:visited, a:hover {
 	cursor: pointer;
 }
 
-#leftbar li.completed:hover {
+#leftbar li.pastdue:hover {
   background-color: #dfdfdf;
 }
 
