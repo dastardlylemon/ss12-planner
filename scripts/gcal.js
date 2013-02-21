@@ -81,9 +81,9 @@
 			      	};
 			      	for (var j=0; j<events.length; j++) {
 			      		if (j<curIndex)
-			      			$('#list_events').append("<li class='pastdue'><h6>"+events[j].end+"</h6><span class='tooltip'><a eid='"+events[j].id+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
+			      			$('#list_events').append("<li class='pastdue'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"j"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 			      		else 
-			      			$('#list_events').append("<li><h6>"+events[j].end+"</h6><span class='tooltip'><a eid='"+events[j].id+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
+			      			$('#list_events').append("<li><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"j"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 			      	}
 			      	$('#leftbar').show();
 			      	callback(callback2);
@@ -92,10 +92,10 @@
 	  	} 
 
 	  	//Loads an individual event
-	  	function loadEvent (uid) {
-	  		window.curUID=uid;
+	  	function loadEvent(index) {
+	  		window.curIndex=index;
 	  		gapi.client.load('calendar', 'v3', function() {
-			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
+			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': events[index].id});
 
 				requestDesc.execute(function(resp) { 
 					var title = resp.summary;
@@ -172,16 +172,16 @@
 				$('.auth-console').show();
 	  	}
 
-	  	function clearScreen(callback,uid) {
+	  	function clearScreen(callback,index) {
 	  		$('#load-message').show();
 	  		$('.auth-console').hide();
-	  		callback(uid);
+	  		callback(index);
 	  	}
 
-	    function completeEvent(uid){
+	    function completeEvent(index){
 	        gapi.client.load('calendar', 'v3', function() {
 	            var eventToUpdateCall = gapi.client.calendar.events.get(
-	                {'calendarId': calid , 'eventId': uid}
+	                {'calendarId': calid , 'eventId': events[index].id}
 	            );
 
 	            eventToUpdateCall.execute(function(resp){
@@ -191,7 +191,7 @@
 	            	{
 						resp.description = completeEmail + " " + resp.description;
 		            	var updateStage = gapi.client.calendar.events.update(
-			               {'calendarId': calid, 'eventId': uid, 'resource': resp}
+			               {'calendarId': calid, 'eventId': events[index].id, 'resource': resp}
 			            );
 
 		            	updateStage.execute(function(resp) {
@@ -202,7 +202,7 @@
 						   else{
 						   	alert("An error occurred. Please try again later.")
 						   }
-					       clearScreen(loadEvent,uid);
+					       clearScreen(loadEvent,index);
 					     });
 		            }
 	            	else
@@ -213,13 +213,13 @@
 
 
   	$(document).on('click', '.eventlinks', function(event){ 
-  		var tempid = $(this).attr('eid');
-    	clearScreen(loadEvent,tempid);
+  		var index = $(this).attr('index');
+    	clearScreen(loadEvent,index);
 	}); 
 
 	$('#list_tasks').on('click', '.taskcheck', function(event){
 		if (!$('input.taskcheck[type=checkbox]:not(:checked)').length)
-    		completeEvent(curUID);
+    		completeEvent(curIndex);
     });
 
 
