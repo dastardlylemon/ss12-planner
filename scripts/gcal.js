@@ -27,7 +27,7 @@
 	          	"id":resp.id
 	          }
 	          loadEvent(eid);
-	          $('#header').html('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
+	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
 	    }
@@ -61,7 +61,7 @@
 	  	} 
 
 	  	//Loads an individual event
-	  	function loadEvent(uid) {
+	  	var loadEvent = function(uid) {
 	  		window.curUID=uid;
 	  		gapi.client.load('calendar', 'v3', function() {
 			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
