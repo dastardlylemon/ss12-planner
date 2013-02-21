@@ -76,10 +76,15 @@
 				        var curDate = new Date();
 				        if (curIndex==0 && parsedDate>=curDate)
 				        	curIndex = i;
-				        var edate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
-				        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,resp.items[i].end.date);
-				      	$('#list_events').append("<li><h6>"+edate+"</h6><span class='tooltip'><a eid='"+events[i].id+"' class='eventlinks' id='"+events[i].id+"'>"+events[i].title+"</a></span></li>");
+				        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
+				        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate);
 			      	};
+			      	for (var j=0; j<events.length; j++) {
+			      		if (j<curIndex)
+			      			$('#list_events').append("<li><h6>"+edate+"</h6><span class='tooltip'><a eid='"+events[i].id+"' class='eventlinks' id='"+events[i].id+"'>"+events[i].title+"</a></span></li>");
+			      		else 
+			      			$('#list_events').append("<li><h6>"+edate+"</h6><span class='tooltip'><a eid='"+events[i].id+"' class='eventlinks' id='"+events[i].id+"'>"+events[i].title+"</a></span></li>");
+			      	}
 			      	$('#leftbar').show();
 			      	callback(callback2);
 			    });
