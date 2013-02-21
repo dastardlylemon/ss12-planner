@@ -33,7 +33,7 @@
 
 		function handleAuthResult(authResult) {
 			if (authResult && !authResult.error) {
-				fetchUserInfo(loadTimeline,loadEvent);
+				fetchUserInfo(loadTimeline,printTimeline,loadEvent);
 				//fetchUserInfo(loadEvent);
 				var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
 				setTimeout(checkAuth, authTimeout);
@@ -43,7 +43,7 @@
 			}
 		}
 		//Prints User Info by accessing json 
-		function fetchUserInfo(callback,callback2){
+		function fetchUserInfo(callback,callback2,callback3){
 	      gapi.client.load('oauth2', 'v1', function(){
 	        var userinfo = gapi.client.request('oauth2/v1/userinfo?alt=json');
 	        userinfo.execute(function(resp){
@@ -52,14 +52,14 @@
 	          	"name":resp.given_name,
 	          	"id":resp.id
 	          }
-	          callback(callback2);
+	          callback(callback2,callback3);
 	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
 	    }
 
       // Loads the timeline on the side.  Display the results on the screen.
-      	function loadTimeline(callback) {
+      	function loadTimeline(callback,callback2) {
 	  		gapi.client.load('calendar', 'v3', function() {
 	  			var calendarRequest = gapi.client.calendar.calendarList.list();
 	  			window.curIndex = 0;
@@ -84,18 +84,22 @@
 				        	var eventComplete = "ncomplete";
 				        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
 			      	};
-			      	$('#list_events').empty();
-			      	for (var j=0; j<events.length; j++) {
-			      		if (j<curIndex)
-			      			$('#list_events').append("<li class='pastdue "+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
-			      		else 
-			      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
-			      	}
-			      	$('#leftbar').show();
-			      	callback(curIndex);
+			      	callback(callback2);
 			    });
 			});
-	  	} 
+		}
+
+		function printTimeline(callback){
+	      	$('#list_events').empty();
+	      	for (var j=0; j<events.length; j++) {
+	      		if (j<curIndex)
+	      			$('#list_events').append("<li class='pastdue "+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
+	      		else 
+	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
+	      	}
+	      	$('#leftbar').show();
+	      	callback(curIndex);
+		}
 
 	  	//Loads an individual event
 	  	function loadEvent(index) {
