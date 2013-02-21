@@ -219,6 +219,7 @@
 					       console.log(resp);
 						   if (resp.id){
 						   	 alert("Event completed!");
+						   	 events[index].complete="complete"
 						   }
 						   else{
 						   	alert("An error occurred. Please try again later.");
