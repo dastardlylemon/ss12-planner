@@ -5,13 +5,18 @@
 		var scopes = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
 		var calid = 'g42kio0ms52em9nt39sjoulh7s@group.calendar.google.com';
 		//evar event titles
-    	var evar = new Array();
-    	//event id 
-    	var eid = new Array();
-    	//event completion
-    	var ecomp = new Array();
-    	//event date
-    	var edate = new Array();
+    	var events = new Array();
+
+    	//Constructor for an event resource
+    	function resource(title,id,description,tasks,start,end) {
+			this.title = title;
+			this.id = id;
+			this.description = description;
+			this.tasks = tasks;
+			this.start = start;
+			this.end = end;
+		}
+		 
 
 		
 		// due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
@@ -26,8 +31,8 @@
 
 		function handleAuthResult(authResult) {
 			if (authResult && !authResult.error) {
-				fetchUserInfo(loadEvent);
 				loadTimeline();
+				fetchUserInfo(loadEvent);
 				var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
 				setTimeout(checkAuth, authTimeout);
 			} 
@@ -67,13 +72,10 @@
 			      	for (var i = 0; i < resp.items.length; i++) {
 				        var li = document.createElement('li');
 				        li.appendChild(document.createTextNode(resp.items[i].summary));
-				        evar[i] = resp.items[i].summary;
-				        console.log(evar[i]);
-				        eid[i] = resp.items[i].id;
-				        console.log(eid[i]);
 				        var parsedDate = new Date(resp.items[i].end.date);
-				        edate[i]=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
-				      	$('#list_events').append("<li><h6>"+edate[i]+"</h6><span class='tooltip'><a eid='"+eid[i]+"' class='eventlinks' id='"+eid[i]+"'>"+evar[i]+"</a></span></li>");
+				        var edate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
+				        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,resp.items[i].end.date);
+				      	$('#list_events').append("<li><h6>"+edate+"</h6><span class='tooltip'><a eid='"+events[i].id+"' class='eventlinks' id='"+events[i].id+"'>"+events[i].location+"</a></span></li>");
 			      	};
 			      	$('#leftbar').show();
 			    });
