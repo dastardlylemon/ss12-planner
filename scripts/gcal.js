@@ -15,7 +15,26 @@
 
 		
 		// due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
-		
+		function handleClientLoad() {
+	        gapi.client.setApiKey(apiKey);
+	        window.setTimeout(checkAuth,1);
+      	}
+
+		function checkAuth() {
+			gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+		}
+
+		function handleAuthResult(authResult) {
+			if (authResult && !authResult.error) {
+				fetchUserInfo(loadEvent);
+				loadTimeline();
+				var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
+				setTimeout(checkAuth, authTimeout);
+			} 
+			else {
+				window.location="index.html";
+			}
+		}
 		//Prints User Info by accessing json 
 		function fetchUserInfo(eid){
 	      gapi.client.load('oauth2', 'v1', function(){
