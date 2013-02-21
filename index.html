@@ -37,13 +37,13 @@
           }
         
           function handleAuthResult(authResult) {
-            var authorizeButton = document.getElementById('authorize-button');
+            var authorizeButton = $('#authorize-button');
             if (authResult && !authResult.error) {
               var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
             setTimeout(checkAuth, authTimeout);
             } else {
-              authorizeButton.style.visibility = '';
-              authorizeButton.onclick = handleAuthClick;
+              $('#authorize-button').show;
+              $('#authorize-button').click(handleAuthClick());
             }
           }
         
@@ -55,7 +55,7 @@
       </script>
     </head>
     <div class="header">
-      <button id="authorize-button">Login</button>
+      <a href="#" id="authorize-button"><h5 style="float:right; color: #fff; margin-right: 20px; ">Login</h5></a>
     </div>
     <body class="splash">
       <div class="row">
