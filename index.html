@@ -28,18 +28,15 @@
         var scopes = 'https://www.googleapis.com/auth/calendar';
         
              function handleClientLoad() {
-              console.log('handleClientLoad');
             gapi.client.setApiKey(apiKey);
             window.setTimeout(checkAuth,1);
           }
         
           function checkAuth() {
-            console.log('handleClientLoad');
             gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
           }
         
           function handleAuthResult(authResult) {
-            console.log('handleClientLoad');
             var authorizeButton = document.getElementById('authorize-button');
             if (authResult && !authResult.error) {
               var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
@@ -51,7 +48,6 @@
           }
         
           function handleAuthClick(event) {
-            console.log('handleClientLoad');
             gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
             return false;
           }
@@ -109,7 +105,6 @@
       <script src="javascripts/foundation.min.js"></script>
       <!-- Initialize JS Plugins -->
       <script src="javascripts/app.js"></script>
-      <script src="scripts/gcal.js"></script>
       <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
       <script>
         $(window).load(function(){
