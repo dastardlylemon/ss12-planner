@@ -225,14 +225,14 @@
     	clearScreen(index);
 	}); 
 
-	$('#plan-select').onchange=function(){
+	$('#plan-select').change(function(){
 		var temp = $(this).attr('value');
 		if (temp!=curid)
     	{
     		calid=temp;
     		loadTimeline();
     	}
-	};
+	})
 
 	$('#list_tasks').on('click', '.taskcheck', function(event){
 		if (!$('input.taskcheck[type=checkbox]:not(:checked)').length)
