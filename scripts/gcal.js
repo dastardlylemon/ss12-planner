@@ -107,6 +107,7 @@
 						$('#miledesc').html(events[index].description);
 						alert('Tasks have not yet been added for this Milestone');
 						$('#load-message').hide();
+						$('.auth-console').show();
 						return;
 					}
 		  		var parsedWords = new Array();
