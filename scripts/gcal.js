@@ -33,8 +33,7 @@
 
 		function handleAuthResult(authResult) {
 			if (authResult && !authResult.error) {
-				fetchUserInfo(loadTimeline,printTimeline,printInfo);
-				//fetchUserInfo(loadEvent);
+				fetchUserInfo();
 				var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
 				setTimeout(checkAuth, authTimeout);
 			} 
@@ -52,14 +51,14 @@
 	          	"name":resp.given_name,
 	          	"id":resp.id
 	          }
-	          callback(callback2,callback3);
+	          loadTimeline();
 	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
 	    }
 
       // Loads the timeline on the side.  Display the results on the screen.
-      	function loadTimeline(callback,callback2) {
+      	function loadTimeline() {
 	  		gapi.client.load('calendar', 'v3', function() {
 	  			var calendarRequest = gapi.client.calendar.calendarList.list();
 	  			window.curIndex = 0;
@@ -84,12 +83,12 @@
 				        	var eventComplete = "ncomplete";
 				        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
 			      	};
-			      	callback(callback2);
+			      	printTimeline();
 			    });
 			});
 		}
 
-		function printTimeline(callback){
+		function printTimeline(){
 	      	$('#list_events').empty();
 	      	for (var j=0; j<events.length; j++) {
 	      		if (j<curIndex)
@@ -100,23 +99,6 @@
 	      	$('#leftbar').show();
 	      	printInfo(curIndex);
 		}
-
-	  	//Loads an individual event
-	  	/**function loadEvent(index) {
-	  		window.curIndex=index;
-	  		gapi.client.load('calendar', 'v3', function() {
-			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': events[index].id});
-
-				requestDesc.execute(function(resp) { 
-					var title = resp.summary;
-					var description = resp.location;
-					var taskstring = resp.description;
-					var eventComplete = events[index].complete;
-					console.log(description);
-					printInfo(title,description,taskstring,eventComplete);
-				});
-			});
-		}**/
 
 	  	function printInfo(index) {
 		  		if (!events[index].tasks)
