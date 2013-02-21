@@ -234,7 +234,7 @@
   	$(document).on('click', '.eventlinks', function(event){ 
   		var index = $(this).attr('index');
   		curIndex=index;
-    	clearScreen(index);
+    	loadTimeline();
 	}); 
 
 	$('#plan-select').change(function(){
@@ -244,6 +244,7 @@
     		curCalIndex=temp;
     		events.length=0;
     		calendars.length=0;
+    		curIndex=0;
     		loadTimeline();
     	}
 	})
