@@ -75,12 +75,13 @@
 				        edate[i]=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
 				      	$('#list_events').append("<li><h6>"+edate[i]+"</h6><span class='tooltip'><a eid='"+eid[i]+"' class='eventlinks' id='"+eid[i]+"'>"+evar[i]+"</a></span></li>");
 			      	};
+			      	$('#leftbar').show();
 			    });
 			});
 	  	} 
 
 	  	//Loads an individual event
-	  	var loadEvent = function(uid) {
+	  	function loadEvent (uid) {
 	  		window.curUID=uid;
 	  		gapi.client.load('calendar', 'v3', function() {
 			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
@@ -153,6 +154,14 @@
 							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle' style='font-size: 1.3em;'>"+parsedWords[i]+"</div></div></div>");
 						}
 				}
+				$('#load-message').hide();
+				$('.auth-console').show();
+	  	}
+
+	  	function clearScreen(callback,uid) {
+	  		$('#load-message').show();
+	  		$('.auth-console').hide();
+	  		callback(uid);
 	  	}
 
 	    function completeEvent(uid){
@@ -179,13 +188,11 @@
 						   else{
 						   	alert("An error occurred. Please try again later.")
 						   }
-					       
+					       clearScreen(loadEvent,uid);
 					     });
 		            }
 	            	else
 	            		alert("Event has already been completed");
-	            	//console.log(resp.description);
-
 	            });
 	        });
 	    }
@@ -193,9 +200,6 @@
 
   	$(document).on('click', '.eventlinks', function(event){ 
   		var tempid = $(this).attr('eid');
-    	//alert('Finish your current task first!');
-    	//var pathname = window.location.pathname;
-    	//console.log("TEMP ID " +tempid);
     	loadEvent(tempid);
 	}); 
 
