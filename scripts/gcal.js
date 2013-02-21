@@ -6,6 +6,7 @@
 		var calid = 'g42kio0ms52em9nt39sjoulh7s@group.calendar.google.com';
     	var events = new Array();
     	var calendars = new Array();
+    	var curCalIndex = 0;
 
     	//Constructor for an event resource
     	function resource(title,id,description,tasks,start,end,complete) {
@@ -55,34 +56,29 @@
 	          	"name":resp.given_name,
 	          	"id":resp.id
 	          }
-	          loadCalendars();
+	          loadTimeline();
 	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
 	    }
 
-
-	    function loadCalendars(){
-	    	gapi.client.load('calendar', 'v3', function() {
-	  			var calendarRequest = gapi.client.calendar.calendarList.list();
-
-	  		calendarRequest.execute(function(resp){
-		    		for (var i=0;i<resp.items.length;i++) {
-		    			if (resp.items[i].summary !== undefined) {
-                    		if (resp.items[i].summary.substring(0, 3) == "&c_") {
-                    			var name = resp.items[i].summary.length-1;
-		    					calendars.push(new Calendar(resp.items[i].summary.substring(3,name),resp.items[i].id));
-		    				}
-		    			}
-		    		}
-		    		loadTimeline();
-		    	});
-	    }
       // Loads the timeline on the side.  Display the results on the screen.
       	function loadTimeline() {
 	  		gapi.client.load('calendar', 'v3', function() {
+	  			var calendarRequest = gapi.client.calendar.calendarList.list();
 	  			window.curIndex = 0;
-		    	var request = gapi.client.calendar.events.list({ 'calendarId': calendars[0].id, 'orderBy': 'startTime', 'singleEvents': true });
+		    	calendarRequest.execute(function(resp){
+		    		for (var i=0;i<resp.items.length;i++) {
+		    			if (resp.items[i].summary !== undefined) {
+                    		if (resp.items[i].summary.substring(0, 3) == "&c_") {
+		    					calendars[i]=new Calendar(resp.items[i].summary,resp.items[i].id);
+		    				}
+		    			}
+
+		    			console.log("CALENDAR NAME "+resp.items[i].summary);
+		    		}
+		    	});
+		    	var request = gapi.client.calendar.events.list({ 'calendarId': calendars[curCalIndex].id, 'orderBy': 'startTime', 'singleEvents': true });
 
 			    request.execute(function(resp) {
 			      	for (var i = 0; i < resp.items.length; i++) {
