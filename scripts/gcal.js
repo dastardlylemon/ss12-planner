@@ -188,7 +188,7 @@
 							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
 						}
 				}
-				if (events[index+1].title)
+				if (events[index+1])
 					$('#footername').html(events[index+1].title);
 				else
 					$('#footername').html('You have no new upcoming Milestones');
