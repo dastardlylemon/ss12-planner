@@ -225,7 +225,7 @@
     	clearScreen(index);
 	}); 
 
-	$('#plan-select').on('change', function(event){ 
+	$(document).on('change', '#plan-select', function(event){ 
   		var temp = $(this).attr('value');
     	if (temp!=curid)
     	{
