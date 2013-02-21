@@ -189,9 +189,9 @@
 						}
 				}
 				if (events[index+1])
-					$('#footername').html(events[index+1].title);
+					$('.footername').html(events[index+1].title);
 				else
-					$('#footername').html('You have no new upcoming Milestones');
+					$('.footername').html('You have no new upcoming Milestones');
 				$('#load-message').hide();
 				$('.auth-console').show();
 	  	}
