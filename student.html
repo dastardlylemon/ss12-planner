@@ -25,8 +25,32 @@
          <script src="javascripts/modernizr.foundation.js"></script>
       </head>
       <body>
+      <script type="text/javascript">
+      function handleClientLoad() {
+        gapi.client.setApiKey(apiKey);
+        window.setTimeout(checkAuth,1);
+      }
+
+      function checkAuth() {
+        gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: true}, handleAuthResult);
+      }
+
+      function handleAuthResult(authResult) {
+        if (authResult && !authResult.error) {
+          fetchUserInfo(loadEvent);
+          loadTimeline();
+          var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
+          setTimeout(checkAuth, authTimeout);
+        } 
+        else {
+          window.location="index.html";
+        }
+      }
+
+         </script>
+         <div id="container">
          <div id="header"><h2>Habitask</h2></div>
-                  <div id="leftbar">
+          <div id="leftbar">
             <h5>Timeline</h5>
             <div id="timespine"></div>
             <ul id="list_events">
@@ -34,7 +58,7 @@
             <p class="fadeout"></p>
             </ul><!--#list_events-->
          </div>
-         <div class="row">
+         <div class="row mcontent">
             <div class="content eleven columns">
                <div id='mastercheck'><input type='checkbox' disabled/><label>Completed!</label></div>
                <h5>Today&rsquo;s Milestone:</h5>
@@ -55,6 +79,7 @@
                </div>
             </div>
          </div>
+       </div>
          <!-- Included JS Files (Compressed) -->
          <script src="javascripts/jquery.js"></script>
          <script src="javascripts/foundation.min.js"></script>
