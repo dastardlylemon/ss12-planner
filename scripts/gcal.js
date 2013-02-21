@@ -71,7 +71,7 @@
 		    		for (var i=0;i<resp.items.length;i++) {
 		    			if (resp.items[i].summary !== undefined) {
                     		if (resp.items[i].summary.substring(0, 3) == "&c_") {
-		    					calendars[i]=new calendar(resp.items[i].summary,resp.items[i].id);
+		    					calendars.push(new calendar(resp.items[i].summary,resp.items[i].id));
 		    				}
 		    			}
 
