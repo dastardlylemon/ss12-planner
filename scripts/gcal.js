@@ -1,6 +1,4 @@
-
-
-		var clientId = '823704617519.apps.googleusercontent.com';
+var clientId = '823704617519.apps.googleusercontent.com';
 		var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
 		var scopes = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
 		var calid = 'g42kio0ms52em9nt39sjoulh7s@group.calendar.google.com';
