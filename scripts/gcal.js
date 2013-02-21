@@ -148,7 +148,7 @@
 						continue;
 					}
 					else 
-						curWord=curWord+events[index].tasks.[i];
+						curWord=curWord+events[index].tasks[i];
 					i++;
 				}
 				//clears DOM element before insertion
