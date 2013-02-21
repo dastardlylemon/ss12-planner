@@ -79,9 +79,9 @@
 				        	curIndex = i;
 				        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
 				        if (resp.items[i].description & resp.items[i].description.search("&d_"+user.email))
-				        	var eventComplete = complete;
+				        	var eventComplete = "complete";
 				        else 
-				        	var eventComplete = ncomplete;
+				        	var eventComplete = "ncomplete";
 				        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
 			      	};
 			      	for (var j=0; j<events.length; j++) {
