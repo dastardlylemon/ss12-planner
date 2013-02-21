@@ -220,7 +220,7 @@
 
   	$(document).on('click', '.eventlinks', function(event){ 
   		var index = $(this).attr('index');
-    	clearScreen(loadEvent,index);
+    	clearScreen(printInfo,index);
 	}); 
 
 	$('#list_tasks').on('click', '.taskcheck', function(event){
