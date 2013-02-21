@@ -84,7 +84,7 @@
 				        	var eventComplete = "ncomplete";
 				        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
 			      	};
-			      	$('#list_events').clear();
+			      	$('#list_events').empty();
 			      	for (var j=0; j<events.length; j++) {
 			      		if (j<curIndex)
 			      			$('#list_events').append("<li class='pastdue "+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
