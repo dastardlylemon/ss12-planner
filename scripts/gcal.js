@@ -23,7 +23,7 @@
 			this.name = name;
 			this.id = id;
 		}
-		 
+
 		function handleClientLoad() {
 	        gapi.client.setApiKey(apiKey);
 	        window.setTimeout(checkAuth,1);
@@ -82,15 +82,22 @@
 				    	if (resp.items)
 				    	{
 					      	for (var i = 0; i < resp.items.length; i++) {
+					      		console.log('iterate');
 						        var parsedDate = new Date(resp.items[i].end.date);
+						        console.log('iterate1');
 						        var curDate = new Date();
+						        console.log('iterate2');
 						        if (curIndex==0 && parsedDate>=curDate)
 						        	curIndex = i;
-						        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate()+1);
+						        else
+						        	curIndex = 0;
+						        console.log(curIndex);
+						        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
 						        if (resp.items[i].description && resp.items[i].description.search("&d_"+user.email)!=-1)
 						        	var eventComplete = "complete";
 						        else 
 						        	var eventComplete = "ncomplete";
+						        console.log(eventComplete);
 						        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
 					      	}
 					      	printTimeline();
@@ -99,7 +106,7 @@
 				      		alert ('Calendar contains no Milestones');
 			    	});
 		    	});
-		    	
+
 			});
 		}
 
@@ -109,6 +116,8 @@
 	      	for (var j=0; j<events.length; j++) {
 	      		if (j<curIndex)
 	      			$('#list_events').append("<li class='pastdue "+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
+	      		else if (j=curIndex)
+	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip' style='display:block;''><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      		else 
 	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      	}
@@ -142,7 +151,7 @@
 						i++;
 						continue;
 					}
-					
+
 					if (events[index].tasks[i]=='&'&&events[index].tasks[i+1]=='t'&&events[index].tasks[i+2]=='_')
 					{	
 						parsedWords.push(curWord);
@@ -241,11 +250,5 @@
 
 	$('#list_tasks').on('click', '.taskcheck', function(event){
 		if (!$('input.taskcheck[type=checkbox]:not(:checked)').length)
-    		{completeEvent(curIndex);alert('yes');}
+    		completeEvent(curIndex);
     });
-
-
-
-
-
-
