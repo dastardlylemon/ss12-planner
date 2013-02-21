@@ -243,6 +243,8 @@
 		if (temp!=curCalIndex)
     	{
     		curCalIndex=temp;
+    		events.length=0;
+    		calendars.length=0;
     		loadTimeline();
     	}
 	})
