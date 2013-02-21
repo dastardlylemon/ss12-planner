@@ -142,7 +142,7 @@
 					$('#mastercheck input').attr('checked','checked');
 					for(i=1;i<parsedWords.length;i++)
 						{
-							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' checked /><label>Done!</label></div><div class='taskdata'><div class='tasktitle' style='font-size: 1.3em;'>"+parsedWords[i]+"</div></div></div>");
+							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' checked /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
 						}
 				}
 				else
@@ -151,7 +151,7 @@
 					$('#miledesc').html(lamfd);
 					for(i=1;i<parsedWords.length;i++)
 						{
-							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle' style='font-size: 1.3em;'>"+parsedWords[i]+"</div></div></div>");
+							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
 						}
 				}
 				$('#load-message').hide();
