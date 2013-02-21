@@ -101,8 +101,9 @@
 						        	var eventComplete = "complete";
 						        else 
 						        	var eventComplete = "ncomplete";
+						        console.log(eventComplete);
 						        events[i] = new resource(resp.items[i].summary,resp.items[i].id,resp.items[i].location,resp.items[i].description,resp.items[i].start.date,fdate,eventComplete);
-					      	};
+					      	}
 					      	printTimeline();
 				      	}
 				      	else
