@@ -81,17 +81,8 @@
       // Loads the timeline on the side.  Display the results on the screen.
       	function loadTimeline() {
 	  		gapi.client.load('calendar', 'v3', function() {
-	  			var calendarRequest = gapi.client.calendar.calendarList.list();
 	  			window.curIndex = 0;
 		    	var request = gapi.client.calendar.events.list({ 'calendarId': calendars[0].id, 'orderBy': 'startTime', 'singleEvents': true });
-		    	
-		    	calendarRequest.execute(function(resp){
-		    		for (var i=0;i<resp.items.length;i++) {
-		    			calendars[i]=new Calendar(resp.items[i].summary,resp.items[i].id);
-
-		    			console.log("CALENDAR NAME "+resp.items[i].summary);
-		    		}
-		    	});
 
 			    request.execute(function(resp) {
 			      	for (var i = 0; i < resp.items.length; i++) {
