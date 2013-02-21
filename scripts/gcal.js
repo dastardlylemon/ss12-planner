@@ -130,11 +130,11 @@
 		  		var parsedWords = new Array();
 				var curWord = "";
 				var i = 0;
-				while (i<events[index].tasks)
+				while (i<events[index].tasks.length)
 				{
 					if (i==events[index].tasks.length-1)
 					{
-						curWord=curWord+events[index].tasks.charAt(i);
+						curWord=curWord+events[index].tasks[i];
 						parsedWords.push(curWord);
 						i++;
 						continue;
@@ -148,7 +148,7 @@
 						continue;
 					}
 					else 
-						curWord=curWord+events[index].tasks.charAt(i);
+						curWord=curWord+events[index].tasks.[i];
 					i++;
 				}
 				//clears DOM element before insertion
