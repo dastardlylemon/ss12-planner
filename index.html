@@ -43,14 +43,14 @@
             setTimeout(checkAuth, authTimeout);
             } else {
               $('#authorize-button').show;
-              $('#authorize-button').click(handleAuthClick());
+              $('#authorize-button').click(function handleAuthClick(event) {
+            gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
+            return false;
+          });
             }
           }
         
-          function handleAuthClick(event) {
-            gapi.auth.authorize({client_id: clientId, scope: scopes, immediate: false}, handleAuthResult);
-            return false;
-          }
+          
              
       </script>
     </head>
