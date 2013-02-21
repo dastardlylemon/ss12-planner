@@ -81,7 +81,7 @@
 	  	} 
 
 	  	//Loads an individual event
-	  	var loadEvent = function(uid) {
+	  	function loadEvent (uid) {
 	  		window.curUID=uid;
 	  		gapi.client.load('calendar', 'v3', function() {
 			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': uid});
@@ -158,6 +158,12 @@
 				$('.auth-console').show();
 	  	}
 
+	  	function clearScreen(callback,uid) {
+	  		$('#load-message').show();
+	  		$('.auth-console').hide();
+	  		callback(uid);
+	  	}
+
 	    function completeEvent(uid){
 	        gapi.client.load('calendar', 'v3', function() {
 	            var eventToUpdateCall = gapi.client.calendar.events.get(
@@ -182,13 +188,11 @@
 						   else{
 						   	alert("An error occurred. Please try again later.")
 						   }
-					       
+					       clearScreen(loadEvent,uid);
 					     });
 		            }
 	            	else
 	            		alert("Event has already been completed");
-	            	//console.log(resp.description);
-
 	            });
 	        });
 	    }
@@ -196,9 +200,6 @@
 
   	$(document).on('click', '.eventlinks', function(event){ 
   		var tempid = $(this).attr('eid');
-    	//alert('Finish your current task first!');
-    	//var pathname = window.location.pathname;
-    	//console.log("TEMP ID " +tempid);
     	loadEvent(tempid);
 	}); 
 
