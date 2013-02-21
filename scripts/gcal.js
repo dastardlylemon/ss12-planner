@@ -154,7 +154,7 @@
 							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
 						}
 				}
-				$('.auth-console').each().show();
+				$('.auth-console').show();
 	  	}
 
 	    function completeEvent(uid){
