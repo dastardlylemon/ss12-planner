@@ -135,7 +135,7 @@
 					i++;
 				}
 				//clears DOM element before insertion
-				$('#list_tasks, #miletitle, #miledesc').empty();
+				//$('#list_tasks, #miletitle, #miledesc').empty();
 				//inserts data into DOM element
 				if (events[index].complete=="complete")
 				{
@@ -161,10 +161,11 @@
 				$('.auth-console').show();
 	  	}
 
-	  	function clearScreen(callback,callback2) {
+	  	function clearScreen(index) {
 	  		$('#load-message').show();
 	  		$('.auth-console').hide();
-	  		callback(callback2);
+	  		$('#list_tasks, #miletitle, #miledesc').empty();
+	  		printInfo(index);
 	  	}
 
 	    function completeEvent(index){
@@ -203,7 +204,7 @@
 
   	$(document).on('click', '.eventlinks', function(event){ 
   		var index = $(this).attr('index');
-    	clearScreen(printInfo,index);
+    	clearScreen(index);
 	}); 
 
 	$('#list_tasks').on('click', '.taskcheck', function(event){
