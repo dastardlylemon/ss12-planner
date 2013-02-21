@@ -6,6 +6,7 @@
 		var calid = 'g42kio0ms52em9nt39sjoulh7s@group.calendar.google.com';
 		//evar event titles
     	var events = new Array();
+    	events.sort(function(a,b){return a>b ? -1 : a<b ? 1 : 0;})
 
     	//Constructor for an event resource
     	function resource(title,id,description,tasks,start,end) {
