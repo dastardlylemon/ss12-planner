@@ -1,3 +1,4 @@
+
 		var clientId = '823704617519.apps.googleusercontent.com';
 		var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
 		var scopes = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
@@ -5,7 +6,6 @@
     	var events = new Array();
     	var calendars = new Array();
     	var curCalIndex = 0;
-    	var curIndex = 0;
 
     	//Constructor for an event resource
     	function resource(title,id,description,tasks,start,end,complete) {
@@ -18,12 +18,14 @@
 			this.complete = complete;
 		}
 
-		//Constructor for a calendar object
 		function calendar(name,id) {
 			this.name = name;
 			this.id = id;
 		}
 
+
+
+		// due to the way the google API works, these access codes only work for me. replace with your own if you want to run off a local server
 		function handleClientLoad() {
 	        gapi.client.setApiKey(apiKey);
 	        window.setTimeout(checkAuth,1);
@@ -43,8 +45,7 @@
 				window.location="index.html";
 			}
 		}
-
-		//Fetches User info and inputs into global user object
+		//Prints User Info by accessing json 
 		function fetchUserInfo(){
 	      gapi.client.load('oauth2', 'v1', function(){
 	        var userinfo = gapi.client.request('oauth2/v1/userinfo?alt=json');
@@ -55,14 +56,16 @@
 	          	"id":resp.id
 	          }
 	          loadTimeline();
+	          //$('#header').append('<h5>Welcome '+user.name+'! Your email address is '+user.email+'.</h5>');
 	        });
 	      });
 	    }
 
-      	//Loads calendars and events in first calendar
+      // Loads the timeline on the side.  Display the results on the screen.
       	function loadTimeline() {
 	  		gapi.client.load('calendar', 'v3', function() {
 	  			var calendarRequest = gapi.client.calendar.calendarList.list();
+	  			window.curIndex = 0;
 		    	calendarRequest.execute(function(resp){
 		    		for (var i=0;i<resp.items.length;i++) {
 		    			if (resp.items[i].summary !== undefined) {
@@ -110,7 +113,6 @@
 			});
 		}
 
-		//Displays Calendar
 		function printTimeline(){
 	      	$('#list_events').empty();
 	      	for (var j=0; j<events.length; j++) {
@@ -125,7 +127,6 @@
 	      	clearScreen(curIndex);
 		}
 
-		//Display latest Milestone in Calendar. Past Milestones are marked as well as completed Milestones
 	  	function printInfo(index) {
 		  		if (!events[index].tasks)
 					{
@@ -151,7 +152,7 @@
 						i++;
 						continue;
 					}
-
+					//MAJOR ISSUES AND LOGIC ERRORS
 					if (events[index].tasks[i]=='&'&&events[index].tasks[i+1]=='t'&&events[index].tasks[i+2]=='_')
 					{	
 						parsedWords.push(curWord);
@@ -163,7 +164,9 @@
 						curWord=curWord+events[index].tasks[i];
 					i++;
 				}
-
+				//clears DOM element before insertion
+				//$('#list_tasks, #miletitle, #miledesc').empty();
+				//inserts data into DOM element
 				if (events[index].complete=="complete")
 				{
 					$('#miletitle').html(events[index].title).css({'text-decoration':'line-through'});
@@ -188,7 +191,6 @@
 				$('.auth-console').show();
 	  	}
 
-	  	//Clears the screen
 	  	function clearScreen(index) {
 	  		$('#load-message').show();
 	  		$('.auth-console').hide();
@@ -196,7 +198,6 @@
 	  		printInfo(index);
 	  	}
 
-	  	//Completes and event
 	    function completeEvent(index){
 	        gapi.client.load('calendar', 'v3', function() {
 	            var eventToUpdateCall = gapi.client.calendar.events.get(
@@ -217,11 +218,12 @@
 					       console.log(resp);
 						   if (resp.id){
 						   	 alert("Event completed!");
+						   	 events[index].complete="complete"
 						   }
 						   else{
 						   	alert("An error occurred. Please try again later.");
 						   }
-					       loadTimeline();
+					       clearScreen(index);
 					     });
 		            }
 	            	else
