@@ -116,8 +116,6 @@
 	      	for (var j=0; j<events.length; j++) {
 	      		if (j<curIndex)
 	      			$('#list_events').append("<li class='pastdue "+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
-	      		else if (j==curIndex)
-	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip' style='display:block;''><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      		else 
 	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      	}
@@ -234,7 +232,7 @@
   	$(document).on('click', '.eventlinks', function(event){ 
   		var index = $(this).attr('index');
   		curIndex=index;
-    	loadTimeline();
+    	clearScreen(index);
 	}); 
 
 	$('#plan-select').change(function(){
@@ -244,7 +242,6 @@
     		curCalIndex=temp;
     		events.length=0;
     		calendars.length=0;
-    		curIndex=0;
     		loadTimeline();
     	}
 	})
