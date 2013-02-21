@@ -77,7 +77,7 @@ a, a:visited, a:hover {
 }
 
 #leftbar li.pastdue {
-  background-color: solid 5px #dfdfdf;
+  background-color: #dfdfdf;
 }
 
 #leftbar li h6 {
