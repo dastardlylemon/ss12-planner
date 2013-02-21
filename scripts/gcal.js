@@ -91,7 +91,7 @@
 					var description = resp.location;
 					var taskstring = resp.description;
 	  				var completeEmail = "&d_" + user.email;
-	  				if (taskstring.length>0 && taskstring.search(completeEmail)!=-1)
+	  				if (taskstring && taskstring.search(completeEmail)!=-1)
 	  					var eventComplete = true;
 	  				else
 	  					var eventComplete = false;
