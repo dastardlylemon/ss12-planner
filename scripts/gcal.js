@@ -139,7 +139,7 @@
 				{
 					$('#miletitle').html(lamft).css({'text-decoration':'line-through'});
 					$('#miledesc').html(lamfd).css({'text-decoration':'line-through'});
-					$('#mastercheck input').attr('checked','checked');
+					$('#mastercheck').html("<input type='checkbox' checked='checked' disabled/><label>Completed!</label>");
 					for(i=1;i<parsedWords.length;i++)
 						{
 							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' checked /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
@@ -149,6 +149,7 @@
 				{
 					$('#miletitle').html(lamft);
 					$('#miledesc').html(lamfd);
+					$('#mastercheck').html("<input type='checkbox' disabled/><label>Completed!</label>");
 					for(i=1;i<parsedWords.length;i++)
 						{
 							$('#list_tasks').append("<div class='miletask'><div class='check'><input class='taskcheck' type='checkbox' /><label>Done!</label></div><div class='taskdata'><div class='tasktitle'>"+parsedWords[i]+"</div></div></div>");
