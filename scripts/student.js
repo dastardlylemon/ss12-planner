@@ -1,10 +1,11 @@
 		var clientId = '823704617519.apps.googleusercontent.com';
 		var apiKey = 'AIzaSyD6B1gCukBc6Hudi0oNLXNZaCYSg1pU_MU';
 		var scopes = 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
-		var calid = 'g42kio0ms52em9nt39sjoulh7s@group.calendar.google.com';
+		var calid;
     	var events = new Array();
     	var calendars = new Array();
     	var curCalIndex = 0;
+    	var curIndex = 0;
 
     	//Constructor for an event resource
     	function resource(title,id,description,tasks,start,end,complete) {
@@ -64,8 +65,8 @@
       	function loadTimeline() {
 	  		gapi.client.load('calendar', 'v3', function() {
 	  			var calendarRequest = gapi.client.calendar.calendarList.list();
-	  			window.curIndex = 0;
 		    	calendarRequest.execute(function(resp){
+		    		calendars.length=0;
 		    		for (var i=0;i<resp.items.length;i++) {
 		    			if (resp.items[i].summary !== undefined) {
                     		if (resp.items[i].summary.substring(0, 3) == "&c_") {
@@ -76,25 +77,26 @@
 		    		$('#plan-select').empty();
 		    		for (var i=0;i<calendars.length;i++)
 		    		{
-		    			$('#plan-select').append('<option class="calselect" value="'+i+'" >'+calendars[i].name+'</option>');
+		    			if (i==curCalIndex)
+		    				$('#plan-select').append('<option class="calselect" selected value="'+i+'" >'+calendars[i].name+'</option>');
+		    			else 
+		    				$('#plan-select').append('<option class="calselect" value="'+i+'" >'+calendars[i].name+'</option>');
 		    		}
 		    		var request = gapi.client.calendar.events.list({ 'calendarId': calendars[curCalIndex].id, 'orderBy': 'startTime', 'singleEvents': true });
 
 				    request.execute(function(resp) {
 				    	if (resp.items)
 				    	{
+				    		events.length=0;
 					      	for (var i = 0; i < resp.items.length; i++) {
-					      		console.log('iterate');
 						        var parsedDate = new Date(resp.items[i].end.date);
-						        console.log('iterate1');
 						        var curDate = new Date();
-						        console.log('iterate2');
 						        if (curIndex==0 && parsedDate>=curDate)
 						        	curIndex = i;
 						        else
 						        	curIndex = 0;
 						        console.log(curIndex);
-						        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate());
+						        var fdate=(parsedDate.getMonth()+1)+'-'+(parsedDate.getDate()+1);
 						        if (resp.items[i].description && resp.items[i].description.search("&d_"+user.email)!=-1)
 						        	var eventComplete = "complete";
 						        else 
@@ -117,13 +119,13 @@
 	      	for (var j=0; j<events.length; j++) {
 	      		if (j<curIndex)
 	      			$('#list_events').append("<li class='pastdue "+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
-	      		else if (j=curIndex)
+	      		else if (j==curIndex)
 	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip' style='display:block;''><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      		else 
 	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      	}
 	      	$('#leftbar').show();
-	      	printInfo(curIndex);
+	      	clearScreen(curIndex);
 		}
 
 	  	function printInfo(index) {
@@ -168,6 +170,7 @@
 				//inserts data into DOM element
 				if (events[index].complete=="complete")
 				{
+					$('#duedate').html('You have completed this milestone');
 					$('#miletitle').html(events[index].title).css({'text-decoration':'line-through'});
 					$('#miledesc').html(events[index].description).css({'text-decoration':'line-through'});
 					$('#mastercheck').html("<input type='checkbox' checked='checked' disabled/><label>Completed!</label>");
@@ -178,6 +181,7 @@
 				}
 				else
 				{
+					$('#duedate').html('Your next Milestone: Due '+events[index].end);
 					$('#miletitle').html(events[index].title).css({'text-decoration':'none'});
 					$('#miledesc').html(events[index].description).css({'text-decoration':'none'});
 					$('#mastercheck').html("<input type='checkbox' disabled/><label>Completed!</label>");
@@ -193,24 +197,25 @@
 	  	function clearScreen(index) {
 	  		$('#load-message').show();
 	  		$('.auth-console').hide();
-	  		$('#list_tasks, #miletitle, #miledesc').empty();
+	  		$('#list_tasks, #miletitle, #duedate, #miledesc').empty();
 	  		printInfo(index);
 	  	}
 
 	    function completeEvent(index){
 	        gapi.client.load('calendar', 'v3', function() {
 	            var eventToUpdateCall = gapi.client.calendar.events.get(
-	                {'calendarId': calid , 'eventId': events[index].id}
+	                {'calendarId': calendars[curCalIndex].id , 'eventId': events[index].id}
 	            );
 
-	            eventToUpdateCall.execute(function(resp){
-
+	            gapi.client.calendar.events.get(
+	                {'calendarId': calendars[curCalIndex].id , 'eventId': events[index].id}
+	            ).execute(function(resp){
 					var completeEmail = "&d_" + user.email;
 					if (resp.description.search(completeEmail)==-1)
 	            	{
 						resp.description = completeEmail + " " + resp.description;
 		            	var updateStage = gapi.client.calendar.events.update(
-			               {'calendarId': calid, 'eventId': events[index].id, 'resource': resp}
+			               {'calendarId': calendars[curCalIndex].id, 'eventId': events[index].id, 'resource': resp}
 			            );
 
 		            	updateStage.execute(function(resp) {
@@ -221,7 +226,7 @@
 						   else{
 						   	alert("An error occurred. Please try again later.")
 						   }
-					       clearScreen(index);
+					       loadTimeline();
 					     });
 		            }
 	            	else
@@ -232,8 +237,8 @@
 
 
   	$(document).on('click', '.eventlinks', function(event){ 
-  		var index = $(this).attr('index');
-    	clearScreen(index);
+  		curIndex = $(this).attr('index');
+    	printTimeline();
 	}); 
 
 	$('#plan-select').change(function(){

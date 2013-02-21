@@ -42,7 +42,7 @@
           <div id="load-message" style="text-align: center;"><h1 style="color: #f1bf6c;">Loading...</h1><img src="img/loader.gif" /></div>
             <div class="content eleven columns auth-console" style="display: none;">
                <div id='mastercheck'><input type='checkbox' disabled/><label>Completed!</label></div>
-               <h5>Your Next Milestone:</h5>
+               <h5 id='duedate'></h5>
                <div id="miletitle"><!--TITLE HERE--></div>
                <div id="miledesc"><!--DESC HERE--></div>
                <h5>Current Tasks:</h5>
@@ -54,9 +54,6 @@
          <div class="footer">
             <div class="row">
                <div class="twelve columns auth-console" style="display:none;">
-                  <h5>Next Up: </h5>
-                  <div class="footername"></div> 
-                  <br />
                </div>
             </div>
          </div>
@@ -66,7 +63,7 @@
          <script src="javascripts/foundation.min.js"></script>
          <!-- Initialize JS Plugins -->
         <script src="javascripts/app.js"></script>
-        <script src="scripts/gcal.js"></script>
+        <script src="scripts/student.js"></script>
         <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 
 
