@@ -102,6 +102,14 @@
 		}
 
 	  	function printInfo(lamft,lamfd,lamfs,itfec) {
+		  		if (lamfs.length==0)
+					{
+						$('#miletitle').html(lamft);
+						$('#miledesc').html(lamfd);
+						alert('Tasks have not yet been added for this Milestone');
+						$('#load-message').hide();
+						return;
+					}
 		  		var parsedWords = new Array();
 				var curWord = "";
 				var i = 0;
@@ -125,12 +133,6 @@
 					else 
 						curWord=curWord+lamfs.charAt(i);
 					i++;
-				}
-				if (parsedWords.length==0)
-				{
-					$('#miletitle').html(lamft);
-					$('#miledesc').html(lamfd);
-					alert('Tasks have not yet been added for this Milestone');
 				}
 				//clears DOM element before insertion
 				$('#list_tasks, #miletitle, #miledesc').empty();
