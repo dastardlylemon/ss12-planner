@@ -156,7 +156,7 @@ function makeApiCall() {
 
         // we've been authorized, so let's display the stuff
         document.getElementById('load-message').style.display = 'none';
-        $('.auth-console').show();
+        document.getElementById('auth-console').style.display = 'block';
 
         // loads all calendars with the appropriate name
         request.execute(function (resp) {
