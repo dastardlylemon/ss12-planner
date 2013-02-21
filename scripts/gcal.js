@@ -33,7 +33,7 @@
 
 		function handleAuthResult(authResult) {
 			if (authResult && !authResult.error) {
-				fetchUserInfo(loadTimeline,printTimeline,loadEvent);
+				fetchUserInfo(loadTimeline,printTimeline,printInfo);
 				//fetchUserInfo(loadEvent);
 				var authTimeout = (authResult.expires_in - 5 * 60) * 1000;
 				setTimeout(checkAuth, authTimeout);
@@ -98,11 +98,11 @@
 	      			$('#list_events').append("<li class='"+events[j].complete+"'><h6>"+events[j].end+"</h6><span class='tooltip'><a index='"+j+"' class='eventlinks' id='"+events[j].id+"'>"+events[j].title+"</a></span></li>");
 	      	}
 	      	$('#leftbar').show();
-	      	callback(curIndex);
+	      	printInfo(curIndex);
 		}
 
 	  	//Loads an individual event
-	  	function loadEvent(index) {
+	  	/**function loadEvent(index) {
 	  		window.curIndex=index;
 	  		gapi.client.load('calendar', 'v3', function() {
 			    var requestDesc = gapi.client.calendar.events.get({ 'calendarId': calid , 'eventId': events[index].id});
@@ -116,13 +116,13 @@
 					printInfo(title,description,taskstring,eventComplete);
 				});
 			});
-		}
+		}**/
 
-	  	function printInfo(lamft,lamfd,lamfs,itfec) {
+	  	function printInfo(index) {
 		  		if (!lamfs)
 					{
-						$('#miletitle').html(lamft);
-						$('#miledesc').html(lamfd);
+						$('#miletitle').html(events[index].title);
+						$('#miledesc').html(events[index].description);
 						alert('Tasks have not yet been added for this Milestone');
 						$('#load-message').hide();
 						return;
@@ -130,17 +130,17 @@
 		  		var parsedWords = new Array();
 				var curWord = "";
 				var i = 0;
-				while (i<lamfs.length)
+				while (i<events[index].tasks)
 				{
-					if (i==lamfs.length-1)
+					if (i==events[index].tasks.length-1)
 					{
-						curWord=curWord+lamfs.charAt(i);
+						curWord=curWord+events[index].tasks.charAt(i);
 						parsedWords.push(curWord);
 						i++;
 						continue;
 					}
 					//MAJOR ISSUES AND LOGIC ERRORS
-					if (lamfs[i]=='&'&&lamfs[i+1]=='t'&&lamfs[i+2]=='_')
+					if (events[index].tasks[i]=='&'&&events[index].tasks[i+1]=='t'&&events[index].tasks[i+2]=='_')
 					{	
 						parsedWords.push(curWord);
 						curWord="";
@@ -148,7 +148,7 @@
 						continue;
 					}
 					else 
-						curWord=curWord+lamfs.charAt(i);
+						curWord=curWord+events[index].tasks.charAt(i);
 					i++;
 				}
 				//clears DOM element before insertion
@@ -156,8 +156,8 @@
 				//inserts data into DOM element
 				if (itfec=="complete")
 				{
-					$('#miletitle').html(lamft).css({'text-decoration':'line-through'});
-					$('#miledesc').html(lamfd).css({'text-decoration':'line-through'});
+					$('#miletitle').html(events[index].title).css({'text-decoration':'line-through'});
+					$('#miledesc').html(events[index].description).css({'text-decoration':'line-through'});
 					$('#mastercheck').html("<input type='checkbox' checked='checked' disabled/><label>Completed!</label>");
 					for(i=1;i<parsedWords.length;i++)
 						{
@@ -166,8 +166,8 @@
 				}
 				else
 				{
-					$('#miletitle').html(lamft).css({'text-decoration':'none'});
-					$('#miledesc').html(lamfd).css({'text-decoration':'none'});
+					$('#miletitle').html(events[index].title).css({'text-decoration':'none'});
+					$('#miledesc').html(events[index].description).css({'text-decoration':'none'});
 					$('#mastercheck').html("<input type='checkbox' disabled/><label>Completed!</label>");
 					for(i=1;i<parsedWords.length;i++)
 						{
