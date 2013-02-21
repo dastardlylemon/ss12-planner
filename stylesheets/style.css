@@ -94,13 +94,16 @@ a, a:visited, a:hover {
 
 #leftbar li.complete {
   background-color: #f1bf6c;
-  color: #fff;
 }
 
 #leftbar li h6 {
 	margin-top: 25px;
 	font-size: 1.3em;
 	color: #f1bf6c;
+}
+
+#leftbar li.complete h6 {
+  color: #fff;
 }
 
 #leftbar li.pastdue h6 {
