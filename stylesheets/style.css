@@ -76,15 +76,27 @@ a, a:visited, a:hover {
 	font-family: 'proxima_nova_ltbold', "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 
+#leftbar li.completed {
+  border: solid 5px #dfdfdf;
+}
+
 #leftbar li h6 {
 	margin-top: 25px;
 	font-size: 1.3em;
 	color: #f1bf6c;
 }
 
+#leftbar li.completed h6 {
+  color: #dfdfdf;
+}
+
 #leftbar li:hover {
 	background-color: #f1bf6c;
 	cursor: pointer;
+}
+
+#leftbar li.completed:hover {
+  background-color: #dfdfdf;
 }
 
 #leftbar li:hover h6 {
